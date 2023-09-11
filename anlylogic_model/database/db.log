@@ -1,0 +1,3481 @@
+/*C2*/SET SCHEMA PUBLIC
+DROP VIEW trace_log IF EXISTS CASCADE
+DROP VIEW histograms_log IF EXISTS CASCADE
+DROP VIEW datasets_log IF EXISTS CASCADE
+DROP VIEW statistics_log IF EXISTS CASCADE
+DROP VIEW agent_type_statechart_stats_log IF EXISTS CASCADE
+DROP VIEW agent_statechart_stats_log IF EXISTS CASCADE
+DROP VIEW agent_statechart_states_log IF EXISTS CASCADE
+DROP VIEW statechart_transitions_log IF EXISTS CASCADE
+DROP VIEW fluid_utilization_log IF EXISTS CASCADE
+DROP VIEW fluid_rates_log IF EXISTS CASCADE
+DROP VIEW fluid_storages_log IF EXISTS CASCADE
+DROP VIEW fluid_units_log IF EXISTS CASCADE
+DROP VIEW resource_unit_utilization_log IF EXISTS CASCADE
+DROP VIEW resource_pool_utilization_log IF EXISTS CASCADE
+DROP VIEW resource_pool_task_stats_log IF EXISTS CASCADE
+DROP VIEW resource_unit_task_stats_log IF EXISTS CASCADE
+DROP VIEW resource_unit_states_log IF EXISTS CASCADE
+DROP VIEW flowchart_stats_time_in_state_log IF EXISTS CASCADE
+DROP VIEW flowchart_process_states_log IF EXISTS CASCADE
+DROP VIEW flowchart_entries_log IF EXISTS CASCADE
+DROP VIEW events_log IF EXISTS CASCADE
+DROP VIEW agent_messages_log IF EXISTS CASCADE
+DROP VIEW agent_movement_stats_log IF EXISTS CASCADE
+DROP VIEW agent_movement_log IF EXISTS CASCADE
+DROP VIEW library_block_parameters_log IF EXISTS CASCADE
+DROP VIEW agent_parameters_log IF EXISTS CASCADE
+DROP VIEW library_blocks_log IF EXISTS CASCADE
+DROP VIEW agents_log IF EXISTS CASCADE
+DROP TABLE fluid_utilization_raw_log IF EXISTS CASCADE
+DROP TABLE fluid_rates_raw_log IF EXISTS CASCADE
+DROP TABLE fluid_storages_raw_log IF EXISTS CASCADE
+DROP TABLE fluid_units_raw_log IF EXISTS CASCADE
+DROP TABLE resource_unit_utilization_raw_log IF EXISTS CASCADE
+DROP TABLE resource_pool_utilization_raw_log IF EXISTS CASCADE
+DROP TABLE resource_unit_states_raw_log IF EXISTS CASCADE
+DROP TABLE histograms_raw_log IF EXISTS CASCADE
+DROP TABLE datasets_raw_log IF EXISTS CASCADE
+DROP TABLE statistics_raw_log IF EXISTS CASCADE
+DROP TABLE flowchart_process_states_raw_log IF EXISTS CASCADE
+DROP TABLE flowchart_entries_raw_log IF EXISTS CASCADE
+DROP TABLE agent_messages_raw_log IF EXISTS CASCADE
+DROP TABLE agent_movement_raw_log IF EXISTS CASCADE
+DROP TABLE events_raw_log IF EXISTS CASCADE
+DROP TABLE statechart_transitions_raw_log IF EXISTS CASCADE
+DROP TABLE statechart_states_raw_log IF EXISTS CASCADE
+DROP TABLE trace_raw_log IF EXISTS CASCADE
+DROP TABLE agent_elements_raw_log IF EXISTS CASCADE
+DROP TABLE agent_type_statecharts_raw_log IF EXISTS CASCADE
+DROP TABLE agent_type_elements_raw_log IF EXISTS CASCADE
+DROP TABLE agent_parameters_raw_log IF EXISTS CASCADE
+DROP TABLE destroyed_agents_raw_log IF EXISTS CASCADE
+DROP TABLE agents_raw_log IF EXISTS CASCADE
+DROP TABLE agent_types_raw_log IF EXISTS CASCADE
+DROP FUNCTION al_format_agent_name_log IF EXISTS CASCADE
+DROP FUNCTION al_format_agent_type_name_log IF EXISTS CASCADE
+DELETE FROM AL_DB_OBJECTS WHERE NAME='al_format_agent_type_name_log' AND TYPE='FUNCTION' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='al_format_agent_name_log' AND TYPE='FUNCTION' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agent_types_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agents_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='destroyed_agents_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agent_parameters_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agent_type_elements_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agent_type_statecharts_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agent_elements_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='trace_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='statechart_states_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='statechart_transitions_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='events_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agent_movement_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agent_messages_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='flowchart_entries_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='flowchart_process_states_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='statistics_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='datasets_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='histograms_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='resource_unit_states_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='resource_pool_utilization_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='resource_unit_utilization_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='fluid_units_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='fluid_storages_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='fluid_rates_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='fluid_utilization_raw_log' AND TYPE='TABLE' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agents_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='library_blocks_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agent_parameters_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='library_block_parameters_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agent_movement_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agent_movement_stats_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agent_messages_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='events_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='flowchart_entries_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='flowchart_process_states_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='flowchart_stats_time_in_state_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='resource_unit_states_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='resource_unit_task_stats_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='resource_pool_task_stats_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='resource_pool_utilization_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='resource_unit_utilization_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='fluid_units_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='fluid_storages_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='fluid_rates_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='fluid_utilization_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='statechart_transitions_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agent_statechart_states_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agent_statechart_stats_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='agent_type_statechart_stats_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='statistics_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='datasets_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='histograms_log' AND TYPE='VIEW' AND USAGE='LOG'
+DELETE FROM AL_DB_OBJECTS WHERE NAME='trace_log' AND TYPE='VIEW' AND USAGE='LOG'
+COMMIT
+CREATE FUNCTION al_format_agent_type_name_log (agentType LONGVARCHAR) RETURNS LONGVARCHAR\u000aBEGIN ATOMIC\u000a\u0009DECLARE dotIndex INT;\u000a\u0009SET dotIndex = LOCATE ('.', REVERSE (agentType));\u000a\u0009IF dotIndex = 0 THEN\u000a\u0009\u0009RETURN agentType;\u000a\u0009END IF;\u000a\u0009RETURN REVERSE (SUBSTRING (REVERSE (agentType), 0, dotIndex));\u000aEND
+INSERT INTO AL_DB_OBJECTS VALUES('al_format_agent_type_name_log','FUNCTION','LOG')
+COMMIT
+CREATE FUNCTION al_format_agent_name_log (name LONGVARCHAR, id INT) RETURNS LONGVARCHAR\u000aBEGIN ATOMIC\u000a\u0009DECLARE index INT;\u000a\u0009DECLARE result LONGVARCHAR;\u000a\u0009SET result = name;\u000a\u0009SET index = LOCATE ('root.', name);\u000a\u0009IF index = 1 THEN\u000a\u0009\u0009SET result = SUBSTRING (result, LENGTH('root.') + 1, LENGTH(result));\u000a\u0009END IF;\u000a\u0009SET index = LOCATE('[', result);\u0009IF index > 0 THEN\u000a\u0009\u0009SET result = CONCAT (result, ' : ', id);\u000a\u0009END IF;\u000a\u0009RETURN result;\u000aEND
+INSERT INTO AL_DB_OBJECTS VALUES('al_format_agent_name_log','FUNCTION','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS agent_types_raw_log (ID INT PRIMARY KEY, NAME VARCHAR(255), COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE)
+INSERT INTO AL_DB_OBJECTS VALUES('agent_types_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS agents_raw_log (ID INT PRIMARY KEY, AGENT_TYPE_ID INT, NAME VARCHAR(255), DATE TIMESTAMP, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE,  CONSTRAINT AGENT_TYPE_REF FOREIGN KEY (AGENT_TYPE_ID) REFERENCES agent_types_raw_log(Id))
+INSERT INTO AL_DB_OBJECTS VALUES('agents_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS destroyed_agents_raw_log (AGENT_ID INT, DATE TIMESTAMP, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE,  CONSTRAINT DESTROYED_AGENT_REF FOREIGN KEY (AGENT_ID) REFERENCES agents_raw_log(Id) )
+INSERT INTO AL_DB_OBJECTS VALUES('destroyed_agents_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS agent_parameters_raw_log (AGENT_ID INT, PARAMETER_NAME VARCHAR(255), PARAMETER_VALUE LONGVARCHAR, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT AGENT_PARAMETERS_AGENT_REF FOREIGN KEY (AGENT_ID) REFERENCES agents_raw_log(Id) )
+INSERT INTO AL_DB_OBJECTS VALUES('agent_parameters_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS agent_type_elements_raw_log (ID INT PRIMARY KEY, AGENT_TYPE_ID INT, NAME VARCHAR(255), COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT ELEMENT_TO_AGENT_TYPE_REF FOREIGN KEY (AGENT_TYPE_ID) REFERENCES agent_types_raw_log(Id))
+INSERT INTO AL_DB_OBJECTS VALUES('agent_type_elements_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS agent_type_statecharts_raw_log (STATECHART_ID INT, ELEMENT_ID INT, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT STATECHARTS_STATECHART_TO_ELEMENT_REF FOREIGN KEY (STATECHART_ID) REFERENCES agent_type_elements_raw_log(Id),CONSTRAINT STATECHARTS_ELEMENT_TO_ELEMENT_REF FOREIGN KEY (ELEMENT_ID) REFERENCES agent_type_elements_raw_log(Id))
+INSERT INTO AL_DB_OBJECTS VALUES('agent_type_statecharts_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS agent_elements_raw_log (ID INT PRIMARY KEY, AGENT_ID INT, NAME VARCHAR(255), COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT ELEMENT_TO_AGENT_REF FOREIGN KEY (AGENT_ID) REFERENCES agents_raw_log(Id))
+INSERT INTO AL_DB_OBJECTS VALUES('agent_elements_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS trace_raw_log (COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE,  AGENT_ID INT, DATE TIMESTAMP, MESSAGE_TEXT LONGVARCHAR, CONSTRAINT TRACE_LOG_AGENT_REF FOREIGN KEY (AGENT_ID) REFERENCES agents_raw_log(Id))
+INSERT INTO AL_DB_OBJECTS VALUES('trace_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS statechart_states_raw_log (AGENT_ID INT, STATE_ID INT, ENTRY_DATE TIMESTAMP, EXIT_DATE TIMESTAMP, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT STATECHART_STATES_AGENT_REF FOREIGN KEY (AGENT_ID) REFERENCES agents_raw_log(ID),CONSTRAINT STATECHART_STATES_STATE_REF FOREIGN KEY (STATE_ID) REFERENCES agent_type_elements_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('statechart_states_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS statechart_transitions_raw_log (AGENT_ID INT, TRANSITION_ID INT, FROM_STATE_ID INT, DATE TIMESTAMP, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT STATECHART_AGENT_REF FOREIGN KEY (AGENT_ID) REFERENCES agents_raw_log(ID),CONSTRAINT TRANSITION_REF FOREIGN KEY (TRANSITION_ID) REFERENCES agent_type_elements_raw_log(ID),CONSTRAINT FROM_STATE_REF FOREIGN KEY (FROM_STATE_ID) REFERENCES agent_type_elements_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('statechart_transitions_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS events_raw_log (EVENT_ID INT, DATE TIMESTAMP, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT EVENT_REF FOREIGN KEY (EVENT_ID) REFERENCES agent_type_elements_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('events_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS agent_movement_raw_log (AGENT_ID INT, SPEED FLOAT, START_DATE TIMESTAMP, STOP_DATE TIMESTAMP, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT MOVEMENT_AGENT_REF FOREIGN KEY (AGENT_ID) REFERENCES agents_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('agent_movement_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS agent_messages_raw_log (AGENT_ID INT, SENDER_ID INT, MESSAGE LONGVARCHAR, DATE TIMESTAMP, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE,  CONSTRAINT MESSAGES_AGENT_REF FOREIGN KEY (AGENT_ID) REFERENCES agents_raw_log(ID),CONSTRAINT MESSAGES_SENDER_AGENT_REF FOREIGN KEY (SENDER_ID) REFERENCES agents_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('agent_messages_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS flowchart_entries_raw_log (COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE,  AGENT_ID INT, BLOCK_ID INT, ENTRY_DATE TIMESTAMP, CONSTRAINT FLOWCHART_ENTRIES_ENTITY_AGENT_REF FOREIGN KEY (AGENT_ID) REFERENCES agents_raw_log(ID),CONSTRAINT FLOWCHART_ENTRIES_BLOCK_AGENT_REF FOREIGN KEY (BLOCK_ID) REFERENCES agents_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('flowchart_entries_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS flowchart_process_states_raw_log (AGENT_ID INT, BLOCK_ID INT, ACTIVITY_TYPE VARCHAR(20), START_DATE TIMESTAMP, STOP_DATE TIMESTAMP,  COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT FLOWCHART_PROCESS_STATES_ENTITY_AGENT_REF FOREIGN KEY (AGENT_ID) REFERENCES agents_raw_log(ID),CONSTRAINT FLOWCHART_PROCESS_STATES_BLOCK_AGENT_REF FOREIGN KEY (BLOCK_ID) REFERENCES agents_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('flowchart_process_states_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS statistics_raw_log (AGENT_ID INT, NAME VARCHAR(255), MEAN FLOAT, DEVIATION FLOAT, MINIMUM FLOAT, MAXIMUM FLOAT, MEAN_CONFIDENCE FLOAT, NUMBER INT, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT STATISTICS_AGENT_REF FOREIGN KEY (AGENT_ID) REFERENCES agents_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('statistics_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS datasets_raw_log (ELEMENT_ID INT, INDEX INT, X FLOAT, Y FLOAT, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT DATASETS_ELEMENT_REF FOREIGN KEY (ELEMENT_ID) REFERENCES agent_elements_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('datasets_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS histograms_raw_log (ELEMENT_ID INT, START FLOAT, END FLOAT, PDF FLOAT, CDF FLOAT, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT HISTOGRAMS_ELEMENT_REF FOREIGN KEY (ELEMENT_ID) REFERENCES agent_elements_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('histograms_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS resource_unit_states_raw_log (UNIT_ID INT, POOL_ID INT, USAGE_STATE VARCHAR(20), TASK_TYPE VARCHAR(20), AGENT_ID INT, TASK_ID INT, START_DATE TIMESTAMP, STOP_DATE TIMESTAMP, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT RESOURCE_UNIT_STATES_UNIT_AGENT_REF FOREIGN KEY (UNIT_ID) REFERENCES agents_raw_log(ID),CONSTRAINT RESOURCE_UNIT_STATES_POOL_AGENT_REF FOREIGN KEY (POOL_ID) REFERENCES agents_raw_log(ID),CONSTRAINT RESOURCE_UNIT_STATES_AGENT_AGENT_REF FOREIGN KEY (AGENT_ID) REFERENCES agents_raw_log(ID),CONSTRAINT RESOURCE_UNIT_STATES_TASK_AGENT_REF FOREIGN KEY (TASK_ID) REFERENCES agents_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('resource_unit_states_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS resource_pool_utilization_raw_log (POOL_ID INT, UTILIZATION FLOAT, SIZE INT, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT RESOURCE_POOL_UTILIZATION_POOL_AGENT_REF FOREIGN KEY (POOL_ID) REFERENCES agents_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('resource_pool_utilization_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS resource_unit_utilization_raw_log (UNIT_ID INT, POOL_ID INT, UTILIZATION FLOAT, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT RESOURCE_UNIT_UTILIZATION_UNIT_AGENT_REF FOREIGN KEY (UNIT_ID) REFERENCES agents_raw_log(ID),CONSTRAINT RESOURCE_UNIT_UTILIZATION_POOL_AGENT_REF FOREIGN KEY (POOL_ID) REFERENCES agents_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('resource_unit_utilization_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS fluid_units_raw_log (BLOCK_ID INT, AMOUNT_UNITS VARCHAR(20), RATE_UNITS VARCHAR(20), COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT FLUID_UNITS_BLOCK_AGENT_REF FOREIGN KEY (BLOCK_ID) REFERENCES agents_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('fluid_units_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS fluid_storages_raw_log (BLOCK_ID INT, MINIMUM FLOAT, MAXIMUM FLOAT, AVERAGE FLOAT, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT FLUID_STORAGES_BLOCK_AGENT_REF FOREIGN KEY (BLOCK_ID) REFERENCES agents_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('fluid_storages_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS fluid_rates_raw_log (BLOCK_ID INT, PORT VARCHAR(20), TOTAL FLOAT, MINIMUM FLOAT, MAXIMUM FLOAT, AVERAGE FLOAT, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT FLUID_RATES_BLOCK_AGENT_REF FOREIGN KEY (BLOCK_ID) REFERENCES agents_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('fluid_rates_raw_log','TABLE','LOG')
+COMMIT
+CREATE CACHED TABLE IF NOT EXISTS fluid_utilization_raw_log (BLOCK_ID INT, UTILIZATION FLOAT, COUNTER INT GENERATED BY DEFAULT AS IDENTITY UNIQUE, CONSTRAINT FLUID_UTILIZATION_BLOCK_AGENT_REF FOREIGN KEY (BLOCK_ID) REFERENCES agents_raw_log(ID))
+INSERT INTO AL_DB_OBJECTS VALUES('fluid_utilization_raw_log','TABLE','LOG')
+COMMIT
+CREATE VIEW agents_log AS SELECT al_format_agent_type_name_log(agent_types.NAME) type, al_format_agent_name_log(agents.NAME, agents.ID) name, agents.DATE BirthDate, destroyed_agents.DATE DeathDate FROM agent_types_raw_log agent_types INNER JOIN agents_raw_log agents ON agent_types.ID = agents.AGENT_TYPE_ID LEFT JOIN destroyed_agents_raw_log destroyed_agents ON agents.ID = destroyed_agents.AGENT_ID WHERE agent_types.NAME NOT LIKE 'com.anylogic.libraries.%' ORDER BY type, name
+INSERT INTO AL_DB_OBJECTS VALUES('agents_log','VIEW','LOG')
+COMMIT
+CREATE VIEW library_blocks_log AS SELECT al_format_agent_type_name_log(agent_types.NAME) type, al_format_agent_name_log(agents.NAME, agents.ID) name, agents.DATE BirthDate, destroyed_agents.DATE DeathDate FROM agent_types_raw_log agent_types INNER JOIN agents_raw_log agents ON agent_types.ID = agents.AGENT_TYPE_ID LEFT JOIN destroyed_agents_raw_log destroyed_agents ON agents.ID = destroyed_agents.AGENT_ID WHERE agent_types.NAME LIKE 'com.anylogic.libraries.%' ORDER BY type, name
+INSERT INTO AL_DB_OBJECTS VALUES('library_blocks_log','VIEW','LOG')
+COMMIT
+CREATE VIEW agent_parameters_log AS SELECT al_format_agent_type_name_log(agent_types.NAME) agent_type, al_format_agent_name_log(agents.NAME, agents.ID) agent, parameters.PARAMETER_NAME parameter_name, parameters.PARAMETER_VALUE parameter_value FROM agent_parameters_raw_log parameters INNER JOIN agents_raw_log agents ON parameters.AGENT_ID = agents.ID INNER JOIN agent_types_raw_log agent_types ON agents.AGENT_TYPE_ID = agent_types.ID WHERE agent_types.NAME NOT LIKE 'com.anylogic.libraries.%' ORDER BY agent_type, agent
+INSERT INTO AL_DB_OBJECTS VALUES('agent_parameters_log','VIEW','LOG')
+COMMIT
+CREATE VIEW library_block_parameters_log AS SELECT al_format_agent_type_name_log(agent_types.NAME) block_type, al_format_agent_name_log(agents.NAME, agents.ID) block, parameters.PARAMETER_NAME parameter_name, parameters.PARAMETER_VALUE parameter_value FROM agent_parameters_raw_log parameters INNER JOIN agents_raw_log agents ON parameters.AGENT_ID = agents.ID INNER JOIN agent_types_raw_log agent_types ON agents.AGENT_TYPE_ID = agent_types.ID WHERE agent_types.NAME LIKE 'com.anylogic.libraries.%' ORDER BY block_type, block
+INSERT INTO AL_DB_OBJECTS VALUES('library_block_parameters_log','VIEW','LOG')
+COMMIT
+CREATE VIEW agent_movement_log AS SELECT al_format_agent_type_name_log(agent_types.NAME) type, al_format_agent_name_log(agents.NAME, agents.ID) agent, agent_movement.SPEED speed, agent_movement.START_DATE start_date, agent_movement.STOP_DATE stop_date FROM agent_movement_raw_log agent_movement INNER JOIN agents_raw_log agents ON agent_movement.AGENT_ID = agents.ID INNER JOIN agent_types_raw_log agent_types ON agents.AGENT_TYPE_ID = agent_types.ID ORDER BY start_date
+INSERT INTO AL_DB_OBJECTS VALUES('agent_movement_log','VIEW','LOG')
+COMMIT
+CREATE VIEW agent_movement_stats_log AS SELECT al_format_agent_type_name_log(agent_types.NAME) type, al_format_agent_name_log(agents.NAME, agents.ID) agent, agent_movement.total_meters total_meters, agent_movement.total_seconds total_seconds, agent_movement.avg_speed_mps avg_speed_mps FROM (   SELECT     AGENT_ID,     SUM(CAST( DATEDIFF('millisecond', START_DATE, STOP_DATE) AS DOUBLE ) * SPEED) / 1000 total_meters,     SUM(CAST( DATEDIFF('millisecond', START_DATE, STOP_DATE) AS DOUBLE )) / 1000 total_seconds,     SUM(CAST( DATEDIFF('millisecond', START_DATE, STOP_DATE) AS DOUBLE ) * SPEED)       / SUM(CAST( DATEDIFF('millisecond', START_DATE, STOP_DATE) AS DOUBLE )) avg_speed_mps   FROM agent_movement_raw_log   GROUP BY AGENT_ID) agent_movement INNER JOIN agents_raw_log agents ON agent_movement.AGENT_ID = agents.ID INNER JOIN agent_types_raw_log agent_types ON agents.AGENT_TYPE_ID = agent_types.ID ORDER BY type, agent
+INSERT INTO AL_DB_OBJECTS VALUES('agent_movement_stats_log','VIEW','LOG')
+COMMIT
+CREATE VIEW agent_messages_log AS SELECT am.MESSAGE message, al_format_agent_name_log(a1.NAME, a1.ID) recipient, al_format_agent_type_name_log(at1.NAME) recipient_type, al_format_agent_name_log(a2.NAME, a2.ID) sender, al_format_agent_type_name_log(at2.NAME) sender_type, am.DATE date, am.COUNTER counter FROM agent_messages_raw_log am INNER JOIN agents_raw_log a1 ON am.AGENT_ID = a1.ID INNER JOIN agent_types_raw_log at1 ON a1.AGENT_TYPE_ID = at1.ID LEFT JOIN agents_raw_log a2 ON am.SENDER_ID = a2.ID LEFT JOIN agent_types_raw_log at2 ON a2.AGENT_TYPE_ID = at2.ID ORDER BY am.COUNTER
+INSERT INTO AL_DB_OBJECTS VALUES('agent_messages_log','VIEW','LOG')
+COMMIT
+CREATE VIEW events_log AS SELECT agent_type_elements.NAME event_name, events.DATE date, al_format_agent_type_name_log(agent_types.NAME) agent_type, al_format_agent_name_log(agents.NAME, agents.ID) agent FROM events_raw_log events INNER JOIN agent_type_elements_raw_log agent_type_elements ON events.EVENT_ID = agent_type_elements.ID INNER JOIN agents_raw_log agents ON agent_type_elements.AGENT_TYPE_ID = agents.ID INNER JOIN agent_types_raw_log agent_types ON agent_type_elements.AGENT_TYPE_ID = agent_types.ID ORDER BY events.DATE
+INSERT INTO AL_DB_OBJECTS VALUES('events_log','VIEW','LOG')
+COMMIT
+CREATE VIEW flowchart_entries_log AS SELECT \u0009flowchart_entries.COUNTER counter, \u0009al_format_agent_type_name_log(agent_types.NAME) agent_type, \u0009al_format_agent_name_log(agents.NAME, agents.ID) agent, \u0009al_format_agent_type_name_log(block_types.NAME) block_type, \u0009al_format_agent_name_log(blocks.NAME, blocks.ID) block, \u0009flowchart_entries.ENTRY_DATE entry_date FROM flowchart_entries_raw_log flowchart_entries INNER JOIN agents_raw_log agents ON flowchart_entries.AGENT_ID = agents.ID INNER JOIN agent_types_raw_log agent_types ON agents.AGENT_TYPE_ID = agent_types.ID LEFT JOIN agents_raw_log blocks ON flowchart_entries.BLOCK_ID = blocks.ID LEFT JOIN agent_types_raw_log block_types ON blocks.AGENT_TYPE_ID = block_types.ID ORDER BY flowchart_entries.ENTRY_DATE
+INSERT INTO AL_DB_OBJECTS VALUES('flowchart_entries_log','VIEW','LOG')
+COMMIT
+CREATE VIEW flowchart_process_states_log AS SELECT al_format_agent_type_name_log(agent_types.NAME) agent_type, al_format_agent_name_log(agents.NAME, agents.ID) agent, al_format_agent_type_name_log(block_types.NAME) block_type, al_format_agent_name_log(blocks.NAME, blocks.ID) block, flowchart_process_states.ACTIVITY_TYPE activity_type, flowchart_process_states.START_DATE start_date, flowchart_process_states.STOP_DATE stop_date FROM flowchart_process_states_raw_log flowchart_process_states INNER JOIN agents_raw_log agents ON flowchart_process_states.AGENT_ID = agents.ID INNER JOIN agent_types_raw_log agent_types ON agents.AGENT_TYPE_ID = agent_types.ID INNER JOIN agents_raw_log blocks ON flowchart_process_states.BLOCK_ID = blocks.ID INNER JOIN agent_types_raw_log block_types ON blocks.AGENT_TYPE_ID = block_types.ID ORDER BY flowchart_process_states.START_DATE
+INSERT INTO AL_DB_OBJECTS VALUES('flowchart_process_states_log','VIEW','LOG')
+COMMIT
+CREATE VIEW flowchart_stats_time_in_state_log AS SELECT al_format_agent_type_name_log(block_types.NAME) block_type, al_format_agent_name_log(blocks.NAME, blocks.ID) block, flowchart_process_states.activity_type activity_type, flowchart_process_states.mean_seconds mean_seconds, flowchart_process_states.total_seconds total_seconds, flowchart_process_states.min_seconds min_seconds, flowchart_process_states.max_seconds max_seconds, flowchart_process_states.n_agents n_agents FROM (   SELECT     BLOCK_ID block_id,     ACTIVITY_TYPE activity_type,     AVG(CAST( DATEDIFF('millisecond', START_DATE, STOP_DATE) AS DOUBLE )) / 1000 mean_seconds,     SUM(CAST( DATEDIFF('millisecond', START_DATE, STOP_DATE) AS DOUBLE )) / 1000 total_seconds,     MIN(CAST( DATEDIFF('millisecond', START_DATE, STOP_DATE) AS DOUBLE )) / 1000 min_seconds,     MAX(CAST( DATEDIFF('millisecond', START_DATE, STOP_DATE) AS DOUBLE )) / 1000 max_seconds,     COUNT( DISTINCT AGENT_ID ) n_agents   FROM flowchart_process_states_raw_log flowchart_process_states   GROUP BY BLOCK_ID, ACTIVITY_TYPE) flowchart_process_states INNER JOIN agents_raw_log blocks ON flowchart_process_states.BLOCK_ID = blocks.ID INNER JOIN agent_types_raw_log block_types ON blocks.AGENT_TYPE_ID = block_types.ID ORDER BY block_type, block, activity_type
+INSERT INTO AL_DB_OBJECTS VALUES('flowchart_stats_time_in_state_log','VIEW','LOG')
+COMMIT
+CREATE VIEW resource_unit_states_log AS SELECT al_format_agent_type_name_log(unit_types.NAME) unit_type, al_format_agent_name_log(units.NAME, units.ID) unit, al_format_agent_name_log(pools.NAME, pools.ID) resource_pool, resource_unit_states.USAGE_STATE usage_state, CASE WHEN resource_unit_states.TASK_TYPE = 'TASK_CUSTOM' THEN al_format_agent_name_log(tasks.NAME, tasks.ID) ELSE resource_unit_states.TASK_TYPE END task, al_format_agent_type_name_log(agent_types.NAME) agent_type, al_format_agent_name_log(agents.NAME, agents.ID) agent, resource_unit_states.START_DATE start_date, resource_unit_states.STOP_DATE stop_date FROM resource_unit_states_raw_log resource_unit_states INNER JOIN agents_raw_log units ON resource_unit_states.UNIT_ID = units.ID INNER JOIN agent_types_raw_log unit_types ON units.AGENT_TYPE_ID = unit_types.ID INNER JOIN agents_raw_log pools ON resource_unit_states.POOL_ID = pools.ID LEFT JOIN agents_raw_log agents ON resource_unit_states.AGENT_ID = agents.ID LEFT JOIN agent_types_raw_log agent_types ON agents.AGENT_TYPE_ID = agent_types.ID LEFT JOIN agents_raw_log tasks ON resource_unit_states.TASK_ID = tasks.ID ORDER BY resource_unit_states.START_DATE
+INSERT INTO AL_DB_OBJECTS VALUES('resource_unit_states_log','VIEW','LOG')
+COMMIT
+CREATE VIEW resource_unit_task_stats_log AS SELECT al_format_agent_type_name_log(unit_types.NAME) unit_type, al_format_agent_name_log(pools.NAME, pools.ID) resource_pool, al_format_agent_name_log(units.NAME, units.ID) unit, CASE WHEN resource_unit_states.TASK_TYPE = 'TASK_CUSTOM' THEN al_format_agent_name_log(tasks.NAME, tasks.ID) ELSE resource_unit_states.TASK_TYPE END task, resource_unit_states.mean_seconds mean_seconds, resource_unit_states.total_seconds total_seconds, resource_unit_states.n_tasks n_tasks FROM (   SELECT     UNIT_ID unit_id,     POOL_ID pool_id,     TASK_TYPE task_type,     TASK_ID task_id,     AVG(CAST( DATEDIFF('millisecond', START_DATE, STOP_DATE) AS DOUBLE )) / 1000 mean_seconds,     SUM(CAST( DATEDIFF('millisecond', START_DATE, STOP_DATE) AS DOUBLE )) / 1000 total_seconds,     COUNT(START_DATE) n_tasks   FROM resource_unit_states_raw_log   GROUP BY UNIT_ID, POOL_ID, TASK_TYPE, TASK_ID ) resource_unit_states INNER JOIN agents_raw_log units ON resource_unit_states.UNIT_ID = units.ID INNER JOIN agent_types_raw_log unit_types ON units.AGENT_TYPE_ID = unit_types.ID INNER JOIN agents_raw_log pools ON resource_unit_states.POOL_ID = pools.ID LEFT JOIN agents_raw_log tasks ON resource_unit_states.TASK_ID = tasks.ID ORDER BY unit_type, resource_pool, unit, resource_unit_states.TASK_TYPE, tasks.NAME
+INSERT INTO AL_DB_OBJECTS VALUES('resource_unit_task_stats_log','VIEW','LOG')
+COMMIT
+CREATE VIEW resource_pool_task_stats_log AS SELECT al_format_agent_type_name_log(unit_types.NAME) unit_type, al_format_agent_name_log(pools.NAME, pools.ID) resource_pool, CASE WHEN resource_unit_states.TASK_TYPE = 'TASK_CUSTOM' THEN tasks.NAME ELSE resource_unit_states.TASK_TYPE END task, resource_unit_states.mean_seconds mean_seconds, resource_unit_states.total_seconds total_seconds, resource_unit_states.n_tasks n_tasks FROM (   SELECT     u.AGENT_TYPE_ID unit_type_id,     s.POOL_ID pool_id,     s.TASK_TYPE task_type,     s.TASK_ID task_id,     AVG(CAST( DATEDIFF('millisecond', s.START_DATE, s.STOP_DATE) AS DOUBLE )) / 1000 mean_seconds,     SUM(CAST( DATEDIFF('millisecond', s.START_DATE, s.STOP_DATE) AS DOUBLE )) / 1000 total_seconds,     COUNT(s.START_DATE) n_tasks   FROM resource_unit_states_raw_log s   INNER JOIN agents_raw_log u ON s.UNIT_ID = u.ID   GROUP BY u.AGENT_TYPE_ID, s.POOL_ID, s.TASK_TYPE, s.TASK_ID ) resource_unit_states INNER JOIN agent_types_raw_log unit_types ON resource_unit_states.unit_type_id = unit_types.ID INNER JOIN agents_raw_log pools ON resource_unit_states.POOL_ID = pools.ID LEFT JOIN agents_raw_log tasks ON resource_unit_states.TASK_ID = tasks.ID ORDER BY unit_type, resource_pool, resource_unit_states.TASK_TYPE, tasks.NAME
+INSERT INTO AL_DB_OBJECTS VALUES('resource_pool_task_stats_log','VIEW','LOG')
+COMMIT
+CREATE VIEW resource_pool_utilization_log AS SELECT al_format_agent_name_log(pools.NAME, pools.ID) resource_pool, resource_pool_utilization.UTILIZATION utilization, resource_pool_utilization.SIZE size FROM resource_pool_utilization_raw_log resource_pool_utilization INNER JOIN agents_raw_log pools ON resource_pool_utilization.POOL_ID = pools.ID ORDER BY resource_pool
+INSERT INTO AL_DB_OBJECTS VALUES('resource_pool_utilization_log','VIEW','LOG')
+COMMIT
+CREATE VIEW resource_unit_utilization_log AS SELECT al_format_agent_type_name_log(unit_types.NAME) unit_type, al_format_agent_name_log(pools.NAME, pools.ID) resource_pool, al_format_agent_name_log(units.NAME, units.ID) unit, resource_unit_utilization.UTILIZATION utilization FROM resource_unit_utilization_raw_log resource_unit_utilization INNER JOIN agents_raw_log units ON resource_unit_utilization.UNIT_ID = units.ID INNER JOIN agent_types_raw_log unit_types ON units.AGENT_TYPE_ID = unit_types.ID INNER JOIN agents_raw_log pools ON resource_unit_utilization.POOL_ID = pools.ID ORDER BY unit_type, resource_pool
+INSERT INTO AL_DB_OBJECTS VALUES('resource_unit_utilization_log','VIEW','LOG')
+COMMIT
+CREATE VIEW fluid_units_log AS SELECT al_format_agent_type_name_log(block_types.NAME) block_type, al_format_agent_name_log(blocks.NAME, blocks.ID) block, units.AMOUNT_UNITS amount_units, units.RATE_UNITS rate_units FROM fluid_units_raw_log units INNER JOIN agents_raw_log blocks ON units.BLOCK_ID = blocks.ID INNER JOIN agent_types_raw_log block_types ON blocks.AGENT_TYPE_ID = block_types.ID ORDER BY block_type, block
+INSERT INTO AL_DB_OBJECTS VALUES('fluid_units_log','VIEW','LOG')
+COMMIT
+CREATE VIEW fluid_storages_log AS SELECT al_format_agent_type_name_log(block_types.NAME) block_type, al_format_agent_name_log(blocks.NAME, blocks.ID) block, storages.MINIMUM minimum, storages.MAXIMUM maximum, storages.AVERAGE average FROM fluid_storages_raw_log storages INNER JOIN agents_raw_log blocks ON storages.BLOCK_ID = blocks.ID INNER JOIN agent_types_raw_log block_types ON blocks.AGENT_TYPE_ID = block_types.ID ORDER BY block_type, block
+INSERT INTO AL_DB_OBJECTS VALUES('fluid_storages_log','VIEW','LOG')
+COMMIT
+CREATE VIEW fluid_rates_log AS SELECT al_format_agent_type_name_log(block_types.NAME) block_type, al_format_agent_name_log(blocks.NAME, blocks.ID) block, rates.PORT port, rates.TOTAL total_amount,rates.MINIMUM minimum_rate, rates.MAXIMUM maximum_rate, rates.AVERAGE average_rate FROM fluid_rates_raw_log rates INNER JOIN agents_raw_log blocks ON rates.BLOCK_ID = blocks.ID INNER JOIN agent_types_raw_log block_types ON blocks.AGENT_TYPE_ID = block_types.ID ORDER BY block_type, block
+INSERT INTO AL_DB_OBJECTS VALUES('fluid_rates_log','VIEW','LOG')
+COMMIT
+CREATE VIEW fluid_utilization_log AS SELECT al_format_agent_type_name_log(block_types.NAME) block_type, al_format_agent_name_log(blocks.NAME, blocks.ID) block, utilization.UTILIZATION utilization FROM fluid_utilization_raw_log utilization INNER JOIN agents_raw_log blocks ON utilization.BLOCK_ID = blocks.ID INNER JOIN agent_types_raw_log block_types ON blocks.AGENT_TYPE_ID = block_types.ID ORDER BY block_type, block
+INSERT INTO AL_DB_OBJECTS VALUES('fluid_utilization_log','VIEW','LOG')
+COMMIT
+CREATE VIEW statechart_transitions_log AS SELECT al_format_agent_type_name_log(agent_types.NAME) agent_type, al_format_agent_name_log(agents.NAME, agents.ID) agent, transitions.NAME transition, states.NAME from_state, statechart_transitions.DATE date FROM statechart_transitions_raw_log statechart_transitions INNER JOIN agents_raw_log agents ON statechart_transitions.AGENT_ID = agents.ID INNER JOIN agent_types_raw_log agent_types ON agents.AGENT_TYPE_ID = agent_types.ID LEFT JOIN agent_type_elements_raw_log transitions ON statechart_transitions.TRANSITION_ID = transitions.ID INNER JOIN agent_type_elements_raw_log states ON statechart_transitions.FROM_STATE_ID = states.ID ORDER BY statechart_transitions.DATE
+INSERT INTO AL_DB_OBJECTS VALUES('statechart_transitions_log','VIEW','LOG')
+COMMIT
+CREATE VIEW agent_statechart_states_log AS SELECT al_format_agent_type_name_log(agent_types.NAME) agent_type, al_format_agent_name_log(agents.NAME, agents.ID) agent, elements_statecharts.NAME statechart, elements_states.NAME state, statechart_states.ENTRY_DATE entry_date, statechart_states.EXIT_DATE exit_date FROM statechart_states_raw_log statechart_states INNER JOIN agents_raw_log agents ON statechart_states.AGENT_ID = agents.ID INNER JOIN agent_types_raw_log agent_types ON agents.AGENT_TYPE_ID = agent_types.ID INNER JOIN agent_type_statecharts_raw_log agent_type_statecharts ON agent_type_statecharts.ELEMENT_ID = statechart_states.STATE_ID INNER JOIN agent_type_elements_raw_log elements_statecharts ON agent_type_statecharts.STATECHART_ID = elements_statecharts.ID INNER JOIN agent_type_elements_raw_log elements_states ON statechart_states.STATE_ID = elements_states.ID ORDER BY agent_type, agent, statechart, statechart_states.ENTRY_DATE
+INSERT INTO AL_DB_OBJECTS VALUES('agent_statechart_states_log','VIEW','LOG')
+COMMIT
+CREATE VIEW agent_statechart_stats_log AS SELECT al_format_agent_type_name_log(agent_types.NAME) agent_type, al_format_agent_name_log(agents.NAME, agents.ID) agent, elements_statecharts.NAME statechart, elements_states.NAME state, statechart_states.mean_seconds mean_seconds, statechart_states.total_seconds total_seconds, statechart_states.n_entries n_entries FROM (   SELECT     AGENT_ID agent_id,     STATE_ID state_id,     AVG(CAST( DATEDIFF('millisecond', ENTRY_DATE, EXIT_DATE) AS DOUBLE )) / 1000 mean_seconds,     SUM(CAST( DATEDIFF('millisecond', ENTRY_DATE, EXIT_DATE) AS DOUBLE )) / 1000 total_seconds,     COUNT(ENTRY_DATE) n_entries   FROM statechart_states_raw_log   GROUP BY AGENT_ID, STATE_ID ) statechart_states INNER JOIN agents_raw_log agents ON statechart_states.AGENT_ID = agents.ID INNER JOIN agent_types_raw_log agent_types ON agents.AGENT_TYPE_ID = agent_types.ID INNER JOIN agent_type_statecharts_raw_log agent_type_statecharts ON agent_type_statecharts.ELEMENT_ID = statechart_states.STATE_ID INNER JOIN agent_type_elements_raw_log elements_statecharts ON agent_type_statecharts.STATECHART_ID = elements_statecharts.ID INNER JOIN agent_type_elements_raw_log elements_states ON statechart_states.STATE_ID = elements_states.ID ORDER BY agent_type, agent, statechart, state
+INSERT INTO AL_DB_OBJECTS VALUES('agent_statechart_stats_log','VIEW','LOG')
+COMMIT
+CREATE VIEW agent_type_statechart_stats_log AS SELECT al_format_agent_type_name_log(agent_types.NAME) agent_type, elements_statecharts.NAME statechart, elements_states.NAME state, statechart_states.mean_seconds mean_seconds, statechart_states.total_seconds total_seconds, statechart_states.min_seconds min_seconds, statechart_states.max_seconds max_seconds, statechart_states.n_entries n_entries FROM (   SELECT     a.AGENT_TYPE_ID agent_type_id,     s.STATE_ID state_id,     AVG(CAST( DATEDIFF('millisecond', s.ENTRY_DATE, s.EXIT_DATE) AS DOUBLE )) / 1000 mean_seconds,     SUM(CAST( DATEDIFF('millisecond', s.ENTRY_DATE, s.EXIT_DATE) AS DOUBLE )) / 1000 total_seconds,     MIN(CAST( DATEDIFF('millisecond', s.ENTRY_DATE, s.EXIT_DATE) AS DOUBLE )) / 1000 min_seconds,     MAX(CAST( DATEDIFF('millisecond', s.ENTRY_DATE, s.EXIT_DATE) AS DOUBLE )) / 1000 max_seconds,     COUNT(s.ENTRY_DATE) n_entries   FROM statechart_states_raw_log s   INNER JOIN agents_raw_log a ON s.AGENT_ID = a.ID   GROUP BY a.AGENT_TYPE_ID, s.STATE_ID ) statechart_states INNER JOIN agent_types_raw_log agent_types ON statechart_states.agent_type_id = agent_types.ID INNER JOIN agent_type_statecharts_raw_log agent_type_statecharts ON agent_type_statecharts.ELEMENT_ID = statechart_states.STATE_ID INNER JOIN agent_type_elements_raw_log elements_statecharts ON agent_type_statecharts.STATECHART_ID = elements_statecharts.ID INNER JOIN agent_type_elements_raw_log elements_states ON statechart_states.STATE_ID = elements_states.ID ORDER BY agent_type, statechart, state
+INSERT INTO AL_DB_OBJECTS VALUES('agent_type_statechart_stats_log','VIEW','LOG')
+COMMIT
+CREATE VIEW statistics_log AS SELECT al_format_agent_type_name_log(agent_types.NAME) agent_type, al_format_agent_name_log(agents.NAME, agents.ID) agent, statistics.NAME name, statistics.MEAN mean, statistics.DEVIATION deviation, statistics.MINIMUM minimum, statistics.MAXIMUM maximum, statistics.MEAN_CONFIDENCE mean_confidence, statistics.NUMBER number FROM statistics_raw_log statistics LEFT JOIN agents_raw_log agents ON statistics.AGENT_ID = agents.ID LEFT JOIN agent_types_raw_log agent_types ON agents.AGENT_TYPE_ID = agent_types.ID ORDER BY agent_type, agent, statistics.NAME
+INSERT INTO AL_DB_OBJECTS VALUES('statistics_log','VIEW','LOG')
+COMMIT
+CREATE VIEW datasets_log AS SELECT al_format_agent_type_name_log(agent_types.NAME) agent_type, al_format_agent_name_log(agents.NAME, agents.ID) agent, agent_elements.NAME name, datasets.INDEX index, datasets.X x, datasets.Y y FROM datasets_raw_log datasets LEFT JOIN agent_elements_raw_log agent_elements ON datasets.ELEMENT_ID = agent_elements.ID LEFT JOIN agents_raw_log agents ON agent_elements.AGENT_ID = agents.ID LEFT JOIN agent_types_raw_log agent_types ON agents.AGENT_TYPE_ID = agent_types.ID ORDER BY agent_type, agent, agent_elements.NAME, datasets.INDEX
+INSERT INTO AL_DB_OBJECTS VALUES('datasets_log','VIEW','LOG')
+COMMIT
+CREATE VIEW histograms_log AS SELECT al_format_agent_type_name_log(agent_types.NAME) agent_type, al_format_agent_name_log(agents.NAME, agents.ID) agent, agent_elements.NAME name, histograms.START start, histograms.END end, histograms.PDF pdf, histograms.CDF cdf FROM histograms_raw_log histograms LEFT JOIN agent_elements_raw_log agent_elements ON histograms.ELEMENT_ID = agent_elements.ID LEFT JOIN agents_raw_log agents ON agent_elements.AGENT_ID = agents.ID LEFT JOIN agent_types_raw_log agent_types ON agents.AGENT_TYPE_ID = agent_types.ID ORDER BY agent_type, agent, agent_elements.NAME, histograms.START
+INSERT INTO AL_DB_OBJECTS VALUES('histograms_log','VIEW','LOG')
+COMMIT
+CREATE VIEW trace_log AS SELECT trace.MESSAGE_TEXT message_text, trace.DATE date, trace.COUNTER counter, al_format_agent_type_name_log(agent_types.NAME) agent_type, al_format_agent_name_log(agents.NAME, agents.ID) agent FROM trace_raw_log trace LEFT JOIN agents_raw_log agents ON trace.AGENT_ID = agents.ID LEFT JOIN agent_types_raw_log agent_types ON agents.AGENT_TYPE_ID = agent_types.ID ORDER BY trace.COUNTER
+INSERT INTO AL_DB_OBJECTS VALUES('trace_log','VIEW','LOG')
+COMMIT
+INSERT INTO AGENT_TYPES_RAW_LOG VALUES(0,'chympanzeelifesimulation.Main',0)
+COMMIT
+INSERT INTO AGENTS_RAW_LOG VALUES(0,0,'root','2023-08-08 00:00:00.000000',0)
+COMMIT
+DELETE FROM AGENTS_RAW_LOG WHERE ID=0
+INSERT INTO AGENTS_RAW_LOG VALUES(0,0,'root','2023-08-08 00:00:00.000000',0)
+COMMIT
+INSERT INTO AGENT_PARAMETERS_RAW_LOG VALUES(0,'newPredatorsPerMonth','0',0)
+COMMIT
+INSERT INTO AGENT_PARAMETERS_RAW_LOG VALUES(0,'initial_number_males','25',1)
+COMMIT
+INSERT INTO AGENT_PARAMETERS_RAW_LOG VALUES(0,'initial_number_females','25',2)
+COMMIT
+INSERT INTO AGENT_PARAMETERS_RAW_LOG VALUES(0,'foodAvailability','5',3)
+COMMIT
+INSERT INTO AGENT_PARAMETERS_RAW_LOG VALUES(0,'monthlyDiseaseIncidenceRate','5',4)
+COMMIT
+INSERT INTO AGENT_TYPES_RAW_LOG VALUES(1,'chympanzeelifesimulation.Tree',1)
+COMMIT
+INSERT INTO AGENTS_RAW_LOG VALUES(51,1,'trees[-1]','2023-08-08 00:00:00.000000',1)
+COMMIT
+INSERT INTO AGENTS_RAW_LOG VALUES(52,1,'trees[-1]','2023-08-08 00:00:00.000000',2)
+COMMIT
+INSERT INTO AGENTS_RAW_LOG VALUES(53,1,'trees[-1]','2023-08-08 00:00:00.000000',3)
+COMMIT
+INSERT INTO AGENTS_RAW_LOG VALUES(54,1,'trees[-1]','2023-08-08 00:00:00.000000',4)
+COMMIT
+INSERT INTO AGENTS_RAW_LOG VALUES(55,1,'trees[-1]','2023-08-08 00:00:00.000000',5)
+COMMIT
+INSERT INTO AGENTS_RAW_LOG VALUES(56,1,'trees[-1]','2023-08-08 00:00:00.000000',6)
+COMMIT
+INSERT INTO AGENTS_RAW_LOG VALUES(57,1,'trees[-1]','2023-08-08 00:00:00.000000',7)
+COMMIT
+INSERT INTO AGENTS_RAW_LOG VALUES(58,1,'trees[-1]','2023-08-08 00:00:00.000000',8)
+COMMIT
+INSERT INTO AGENTS_RAW_LOG VALUES(59,1,'trees[-1]','2023-08-08 00:00:00.000000',9)
+COMMIT
+INSERT INTO AGENTS_RAW_LOG VALUES(60,1,'trees[-1]','2023-08-08 00:00:00.000000',10)
+COMMIT
+DELETE FROM AGENTS_RAW_LOG WHERE ID=51
+INSERT INTO AGENTS_RAW_LOG VALUES(51,1,'root.trees[0]','2023-08-08 00:00:00.000000',1)
+COMMIT
+INSERT INTO AGENT_PARAMETERS_RAW_LOG VALUES(51,'berries','0',5)
+COMMIT
+DELETE FROM AGENTS_RAW_LOG WHERE ID=52
+INSERT INTO AGENTS_RAW_LOG VALUES(52,1,'root.trees[1]','2023-08-08 00:00:00.000000',2)
+COMMIT
+INSERT INTO AGENT_PARAMETERS_RAW_LOG VALUES(52,'berries','0',6)
+COMMIT
+DELETE FROM AGENTS_RAW_LOG WHERE ID=53
+INSERT INTO AGENTS_RAW_LOG VALUES(53,1,'root.trees[2]','2023-08-08 00:00:00.000000',3)
+COMMIT
+INSERT INTO AGENT_PARAMETERS_RAW_LOG VALUES(53,'berries','0',7)
+COMMIT
+DELETE FROM AGENTS_RAW_LOG WHERE ID=54
+INSERT INTO AGENTS_RAW_LOG VALUES(54,1,'root.trees[3]','2023-08-08 00:00:00.000000',4)
+COMMIT
+INSERT INTO AGENT_PARAMETERS_RAW_LOG VALUES(54,'berries','0',8)
+COMMIT
+DELETE FROM AGENTS_RAW_LOG WHERE ID=55
+INSERT INTO AGENTS_RAW_LOG VALUES(55,1,'root.trees[4]','2023-08-08 00:00:00.000000',5)
+COMMIT
+INSERT INTO AGENT_PARAMETERS_RAW_LOG VALUES(55,'berries','0',9)
+COMMIT
+DELETE FROM AGENTS_RAW_LOG WHERE ID=56
+INSERT INTO AGENTS_RAW_LOG VALUES(56,1,'root.trees[5]','2023-08-08 00:00:00.000000',6)
+COMMIT
+INSERT INTO AGENT_PARAMETERS_RAW_LOG VALUES(56,'berries','0',10)
+COMMIT
+DELETE FROM AGENTS_RAW_LOG WHERE ID=57
+INSERT INTO AGENTS_RAW_LOG VALUES(57,1,'root.trees[6]','2023-08-08 00:00:00.000000',7)
+COMMIT
+INSERT INTO AGENT_PARAMETERS_RAW_LOG VALUES(57,'berries','0',11)
+COMMIT
+DELETE FROM AGENTS_RAW_LOG WHERE ID=58
+INSERT INTO AGENTS_RAW_LOG VALUES(58,1,'root.trees[7]','2023-08-08 00:00:00.000000',8)
+COMMIT
+INSERT INTO AGENT_PARAMETERS_RAW_LOG VALUES(58,'berries','0',12)
+COMMIT
+DELETE FROM AGENTS_RAW_LOG WHERE ID=59
+INSERT INTO AGENTS_RAW_LOG VALUES(59,1,'root.trees[8]','2023-08-08 00:00:00.000000',9)
+COMMIT
+INSERT INTO AGENT_PARAMETERS_RAW_LOG VALUES(59,'berries','0',13)
+COMMIT
+DELETE FROM AGENTS_RAW_LOG WHERE ID=60
+INSERT INTO AGENTS_RAW_LOG VALUES(60,1,'root.trees[9]','2023-08-08 00:00:00.000000',10)
+COMMIT
+INSERT INTO AGENT_PARAMETERS_RAW_LOG VALUES(60,'berries','0',14)
+COMMIT
+INSERT INTO AGENT_TYPE_ELEMENTS_RAW_LOG VALUES(0,1,'increaseBerriesEvent',0)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 00:08:43.375000',0)
+COMMIT
+INSERT INTO AGENT_TYPE_ELEMENTS_RAW_LOG VALUES(1,1,'rest',1)
+COMMIT
+INSERT INTO AGENT_TYPE_ELEMENTS_RAW_LOG VALUES(2,1,'treeStart',2)
+COMMIT
+INSERT INTO AGENT_TYPE_STATECHARTS_RAW_LOG VALUES(2,1,0)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(52,1,'2023-08-08 00:00:00.000000','2023-08-08 00:11:25.681000',0)
+COMMIT
+INSERT INTO AGENT_TYPE_ELEMENTS_RAW_LOG VALUES(3,1,'transition',3)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(52,3,1,'2023-08-08 00:11:25.681000',0)
+COMMIT
+INSERT INTO AGENT_TYPE_ELEMENTS_RAW_LOG VALUES(4,1,'serving',4)
+COMMIT
+INSERT INTO AGENT_TYPE_STATECHARTS_RAW_LOG VALUES(2,4,1)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(52,4,'2023-08-08 00:11:25.681000','2023-08-08 00:11:25.682000',1)
+COMMIT
+INSERT INTO AGENT_TYPE_ELEMENTS_RAW_LOG VALUES(5,1,'transition1',5)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(52,5,4,'2023-08-08 00:11:25.682000',1)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 00:12:30.362000',1)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(58,1,'2023-08-08 00:00:00.000000','2023-08-08 00:14:35.051000',2)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(58,3,1,'2023-08-08 00:14:35.051000',2)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(58,4,'2023-08-08 00:14:35.051000','2023-08-08 00:14:35.052000',3)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(58,5,4,'2023-08-08 00:14:35.052000',3)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(51,1,'2023-08-08 00:00:00.000000','2023-08-08 00:15:59.534000',4)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(51,3,1,'2023-08-08 00:15:59.534000',4)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(51,4,'2023-08-08 00:15:59.534000','2023-08-08 00:15:59.535000',5)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(51,5,4,'2023-08-08 00:15:59.535000',5)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,1,'2023-08-08 00:00:00.000000','2023-08-08 00:16:43.911000',6)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,3,1,'2023-08-08 00:16:43.911000',6)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,4,'2023-08-08 00:16:43.911000','2023-08-08 00:16:43.912000',7)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,5,4,'2023-08-08 00:16:43.912000',7)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(53,1,'2023-08-08 00:00:00.000000','2023-08-08 00:17:13.242000',8)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(53,3,1,'2023-08-08 00:17:13.242000',8)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(53,4,'2023-08-08 00:17:13.242000','2023-08-08 00:17:13.243000',9)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(53,5,4,'2023-08-08 00:17:13.243000',9)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(53,1,'2023-08-08 00:17:13.243000','2023-08-08 00:18:09.396000',10)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(53,3,1,'2023-08-08 00:18:09.396000',10)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(53,4,'2023-08-08 00:18:09.396000','2023-08-08 00:18:09.397000',11)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(53,5,4,'2023-08-08 00:18:09.397000',11)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,1,'2023-08-08 00:16:43.912000','2023-08-08 00:18:16.357000',12)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,3,1,'2023-08-08 00:18:16.357000',12)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,4,'2023-08-08 00:18:16.357000','2023-08-08 00:18:16.358000',13)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,5,4,'2023-08-08 00:18:16.358000',13)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,1,'2023-08-08 00:18:16.358000','2023-08-08 00:18:27.488000',14)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,3,1,'2023-08-08 00:18:27.488000',14)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,4,'2023-08-08 00:18:27.488000','2023-08-08 00:18:27.489000',15)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,5,4,'2023-08-08 00:18:27.489000',15)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(54,1,'2023-08-08 00:00:00.000000','2023-08-08 00:21:40.935000',16)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(54,3,1,'2023-08-08 00:21:40.935000',16)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(54,4,'2023-08-08 00:21:40.935000','2023-08-08 00:21:40.936000',17)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(54,5,4,'2023-08-08 00:21:40.936000',17)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(58,1,'2023-08-08 00:14:35.052000','2023-08-08 00:23:03.077000',18)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(58,3,1,'2023-08-08 00:23:03.077000',18)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(58,4,'2023-08-08 00:23:03.077000','2023-08-08 00:23:03.078000',19)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(58,5,4,'2023-08-08 00:23:03.078000',19)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(54,1,'2023-08-08 00:21:40.936000','2023-08-08 00:24:13.623000',20)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(54,3,1,'2023-08-08 00:24:13.623000',20)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(54,4,'2023-08-08 00:24:13.623000','2023-08-08 00:24:13.624000',21)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(54,5,4,'2023-08-08 00:24:13.624000',21)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(53,1,'2023-08-08 00:18:09.397000','2023-08-08 00:24:24.581000',22)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(53,3,1,'2023-08-08 00:24:24.581000',22)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(53,4,'2023-08-08 00:24:24.581000','2023-08-08 00:24:24.582000',23)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(53,5,4,'2023-08-08 00:24:24.582000',23)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 00:26:15.495000',2)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(54,1,'2023-08-08 00:24:13.624000','2023-08-08 00:26:47.657000',24)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(54,3,1,'2023-08-08 00:26:47.657000',24)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(54,4,'2023-08-08 00:26:47.657000','2023-08-08 00:26:47.658000',25)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(54,5,4,'2023-08-08 00:26:47.658000',25)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(58,1,'2023-08-08 00:23:03.078000','2023-08-08 00:28:00.877000',26)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(58,3,1,'2023-08-08 00:28:00.877000',26)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(58,4,'2023-08-08 00:28:00.877000','2023-08-08 00:28:00.878000',27)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(58,5,4,'2023-08-08 00:28:00.878000',27)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 00:28:10.725000',3)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(51,1,'2023-08-08 00:15:59.535000','2023-08-08 00:28:49.268000',28)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(51,3,1,'2023-08-08 00:28:49.268000',28)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(51,4,'2023-08-08 00:28:49.268000','2023-08-08 00:28:49.269000',29)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(51,5,4,'2023-08-08 00:28:49.269000',29)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(60,1,'2023-08-08 00:00:00.000000','2023-08-08 00:30:37.822000',30)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(60,3,1,'2023-08-08 00:30:37.822000',30)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(60,4,'2023-08-08 00:30:37.822000','2023-08-08 00:30:37.823000',31)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(60,5,4,'2023-08-08 00:30:37.823000',31)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(52,1,'2023-08-08 00:11:25.682000','2023-08-08 00:31:52.087000',32)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(52,3,1,'2023-08-08 00:31:52.087000',32)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(52,4,'2023-08-08 00:31:52.087000','2023-08-08 00:31:52.088000',33)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(52,5,4,'2023-08-08 00:31:52.088000',33)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(51,1,'2023-08-08 00:28:49.269000','2023-08-08 00:33:00.579000',34)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(51,3,1,'2023-08-08 00:33:00.579000',34)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(51,4,'2023-08-08 00:33:00.579000','2023-08-08 00:33:00.580000',35)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(51,5,4,'2023-08-08 00:33:00.580000',35)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(53,1,'2023-08-08 00:24:24.582000','2023-08-08 00:33:08.765000',36)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(53,3,1,'2023-08-08 00:33:08.765000',36)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(53,4,'2023-08-08 00:33:08.765000','2023-08-08 00:33:08.766000',37)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(53,5,4,'2023-08-08 00:33:08.766000',37)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(54,1,'2023-08-08 00:26:47.658000','2023-08-08 00:34:18.959000',38)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(54,3,1,'2023-08-08 00:34:18.959000',38)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(54,4,'2023-08-08 00:34:18.959000','2023-08-08 00:34:18.960000',39)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(54,5,4,'2023-08-08 00:34:18.960000',39)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(55,1,'2023-08-08 00:00:00.000000','2023-08-08 00:36:03.627000',40)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(55,3,1,'2023-08-08 00:36:03.627000',40)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(55,4,'2023-08-08 00:36:03.627000','2023-08-08 00:36:03.628000',41)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(55,5,4,'2023-08-08 00:36:03.628000',41)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(58,1,'2023-08-08 00:28:00.878000','2023-08-08 00:36:29.131000',42)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(58,3,1,'2023-08-08 00:36:29.131000',42)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(58,4,'2023-08-08 00:36:29.131000','2023-08-08 00:36:29.132000',43)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(58,5,4,'2023-08-08 00:36:29.132000',43)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(54,1,'2023-08-08 00:34:18.960000','2023-08-08 00:36:33.212000',44)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(54,3,1,'2023-08-08 00:36:33.212000',44)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(54,4,'2023-08-08 00:36:33.212000','2023-08-08 00:36:33.213000',45)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(54,5,4,'2023-08-08 00:36:33.213000',45)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(52,1,'2023-08-08 00:31:52.088000','2023-08-08 00:37:31.557000',46)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(52,3,1,'2023-08-08 00:37:31.557000',46)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(52,4,'2023-08-08 00:37:31.557000','2023-08-08 00:37:31.558000',47)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(52,5,4,'2023-08-08 00:37:31.558000',47)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(52,1,'2023-08-08 00:37:31.558000','2023-08-08 00:40:20.181000',48)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(52,3,1,'2023-08-08 00:40:20.181000',48)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(52,4,'2023-08-08 00:40:20.181000','2023-08-08 00:40:20.182000',49)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(52,5,4,'2023-08-08 00:40:20.182000',49)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,1,'2023-08-08 00:18:27.489000','2023-08-08 00:43:26.969000',50)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,3,1,'2023-08-08 00:43:26.969000',50)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,4,'2023-08-08 00:43:26.969000','2023-08-08 00:43:26.970000',51)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,5,4,'2023-08-08 00:43:26.970000',51)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(52,1,'2023-08-08 00:40:20.182000','2023-08-08 00:44:14.817000',52)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(52,3,1,'2023-08-08 00:44:14.817000',52)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(52,4,'2023-08-08 00:44:14.817000','2023-08-08 00:44:14.818000',53)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(52,5,4,'2023-08-08 00:44:14.818000',53)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(55,1,'2023-08-08 00:36:03.628000','2023-08-08 00:44:49.725000',54)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(55,3,1,'2023-08-08 00:44:49.725000',54)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(55,4,'2023-08-08 00:44:49.725000','2023-08-08 00:44:49.726000',55)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(55,5,4,'2023-08-08 00:44:49.726000',55)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,1,'2023-08-08 00:43:26.970000','2023-08-08 00:46:06.702000',56)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,3,1,'2023-08-08 00:46:06.702000',56)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,4,'2023-08-08 00:46:06.702000','2023-08-08 00:46:06.703000',57)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,5,4,'2023-08-08 00:46:06.703000',57)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,1,'2023-08-08 00:46:06.703000','2023-08-08 00:47:23.717000',58)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,3,1,'2023-08-08 00:47:23.717000',58)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,4,'2023-08-08 00:47:23.717000','2023-08-08 00:47:23.718000',59)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,5,4,'2023-08-08 00:47:23.718000',59)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(60,1,'2023-08-08 00:30:37.823000','2023-08-08 00:49:13.890000',60)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(60,3,1,'2023-08-08 00:49:13.890000',60)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(60,4,'2023-08-08 00:49:13.890000','2023-08-08 00:49:13.891000',61)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(60,5,4,'2023-08-08 00:49:13.891000',61)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(53,1,'2023-08-08 00:33:08.766000','2023-08-08 00:53:12.379000',62)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(53,3,1,'2023-08-08 00:53:12.379000',62)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(53,4,'2023-08-08 00:53:12.379000','2023-08-08 00:53:12.380000',63)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(53,5,4,'2023-08-08 00:53:12.380000',63)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,1,'2023-08-08 00:47:23.718000','2023-08-08 00:54:24.599000',64)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,3,1,'2023-08-08 00:54:24.599000',64)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,4,'2023-08-08 00:54:24.599000','2023-08-08 00:54:24.600000',65)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,5,4,'2023-08-08 00:54:24.600000',65)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(55,1,'2023-08-08 00:44:49.726000','2023-08-08 00:56:09.159000',66)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(55,3,1,'2023-08-08 00:56:09.159000',66)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(55,4,'2023-08-08 00:56:09.159000','2023-08-08 00:56:09.160000',67)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(55,5,4,'2023-08-08 00:56:09.160000',67)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(55,1,'2023-08-08 00:56:09.160000','2023-08-08 00:58:19.337000',68)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(55,3,1,'2023-08-08 00:58:19.337000',68)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(55,4,'2023-08-08 00:58:19.337000','2023-08-08 00:58:19.338000',69)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(55,5,4,'2023-08-08 00:58:19.338000',69)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 00:58:22.700000',4)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 01:01:52.296000',5)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(53,1,'2023-08-08 00:53:12.380000','2023-08-08 01:04:21.327000',70)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(53,3,1,'2023-08-08 01:04:21.327000',70)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(53,4,'2023-08-08 01:04:21.327000','2023-08-08 01:04:21.328000',71)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(53,5,4,'2023-08-08 01:04:21.328000',71)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(54,1,'2023-08-08 00:36:33.213000','2023-08-08 01:04:28.299000',72)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(54,3,1,'2023-08-08 01:04:28.299000',72)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(54,4,'2023-08-08 01:04:28.299000','2023-08-08 01:04:28.300000',73)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(54,5,4,'2023-08-08 01:04:28.300000',73)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 01:04:43.473000',6)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 01:13:09.412000',7)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(55,1,'2023-08-08 00:58:19.338000','2023-08-08 01:13:12.303000',74)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(55,3,1,'2023-08-08 01:13:12.303000',74)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(55,4,'2023-08-08 01:13:12.303000','2023-08-08 01:13:12.304000',75)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(55,5,4,'2023-08-08 01:13:12.304000',75)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(58,1,'2023-08-08 00:36:29.132000','2023-08-08 01:13:59.223000',76)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(58,3,1,'2023-08-08 01:13:59.223000',76)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(58,4,'2023-08-08 01:13:59.223000','2023-08-08 01:13:59.224000',77)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(58,5,4,'2023-08-08 01:13:59.224000',77)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 01:20:07.155000',8)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 01:21:45.016000',9)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(54,1,'2023-08-08 01:04:28.300000','2023-08-08 01:25:07.443000',78)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(54,3,1,'2023-08-08 01:25:07.443000',78)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(54,4,'2023-08-08 01:25:07.443000','2023-08-08 01:25:07.444000',79)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(54,5,4,'2023-08-08 01:25:07.444000',79)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 01:31:52.116000',10)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(52,1,'2023-08-08 00:44:14.818000','2023-08-08 01:35:31.671000',80)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(52,3,1,'2023-08-08 01:35:31.671000',80)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(52,4,'2023-08-08 01:35:31.671000','2023-08-08 01:35:31.672000',81)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(52,5,4,'2023-08-08 01:35:31.672000',81)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(51,1,'2023-08-08 00:33:00.580000','2023-08-08 01:36:55.106000',82)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(51,3,1,'2023-08-08 01:36:55.106000',82)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(51,4,'2023-08-08 01:36:55.106000','2023-08-08 01:36:55.107000',83)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(51,5,4,'2023-08-08 01:36:55.107000',83)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 01:43:40.627000',11)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 01:45:26.875000',12)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 01:48:04.728000',13)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 01:49:31.953000',14)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 01:59:19.023000',15)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(58,1,'2023-08-08 01:13:59.224000','2023-08-08 02:01:29.317000',84)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(58,3,1,'2023-08-08 02:01:29.317000',84)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(58,4,'2023-08-08 02:01:29.317000','2023-08-08 02:01:29.318000',85)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(58,5,4,'2023-08-08 02:01:29.318000',85)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 02:05:13.452000',16)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(55,1,'2023-08-08 01:13:12.304000','2023-08-08 02:05:19.824000',86)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(55,3,1,'2023-08-08 02:05:19.824000',86)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(55,4,'2023-08-08 02:05:19.824000','2023-08-08 02:05:19.825000',87)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(55,5,4,'2023-08-08 02:05:19.825000',87)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 02:11:57.445000',17)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 02:22:12.277000',18)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(52,1,'2023-08-08 01:35:31.672000','2023-08-08 02:32:48.277000',88)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(52,3,1,'2023-08-08 02:32:48.277000',88)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(52,4,'2023-08-08 02:32:48.277000','2023-08-08 02:32:48.278000',89)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(52,5,4,'2023-08-08 02:32:48.278000',89)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 02:43:31.079000',19)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(60,1,'2023-08-08 00:49:13.891000','2023-08-08 02:51:40.775000',90)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(60,3,1,'2023-08-08 02:51:40.775000',90)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(60,4,'2023-08-08 02:51:40.775000','2023-08-08 02:51:40.776000',91)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(60,5,4,'2023-08-08 02:51:40.776000',91)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 03:04:12.133000',20)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 03:05:22.297000',21)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 03:07:37.200000',22)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 03:19:24.902000',23)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 03:24:08.760000',24)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 03:25:00.853000',25)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 03:30:52.111000',26)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 04:01:56.570000',27)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 04:07:08.432000',28)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 04:20:17.221000',29)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 04:33:51.591000',30)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 04:52:41.514000',31)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 04:53:43.541000',32)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 05:09:08.063000',33)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 05:09:34.135000',34)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 05:19:55.058000',35)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 05:22:47.438000',36)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,1,'2023-08-08 00:54:24.600000','2023-08-08 05:51:07.060000',92)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,3,1,'2023-08-08 05:51:07.060000',92)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,4,'2023-08-08 05:51:07.060000','2023-08-08 05:51:07.061000',93)
+COMMIT
+INSERT INTO STATECHART_TRANSITIONS_RAW_LOG VALUES(57,5,4,'2023-08-08 05:51:07.061000',93)
+COMMIT
+INSERT INTO EVENTS_RAW_LOG VALUES(0,'2023-08-08 06:00:57.562000',37)
+COMMIT
+INSERT INTO AGENT_ELEMENTS_RAW_LOG VALUES(0,0,'chart : Foraging',0)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,0,262.0E0,0.0E0,0)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,1,263.0E0,0.0E0,1)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,2,264.0E0,0.0E0,2)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,3,265.0E0,0.0E0,3)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,4,266.0E0,0.0E0,4)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,5,267.0E0,0.0E0,5)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,6,268.0E0,0.0E0,6)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,7,269.0E0,0.0E0,7)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,8,270.0E0,0.0E0,8)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,9,271.0E0,0.0E0,9)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,10,272.0E0,0.0E0,10)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,11,273.0E0,0.0E0,11)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,12,274.0E0,0.0E0,12)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,13,275.0E0,0.0E0,13)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,14,276.0E0,0.0E0,14)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,15,277.0E0,0.0E0,15)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,16,278.0E0,0.0E0,16)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,17,279.0E0,0.0E0,17)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,18,280.0E0,0.0E0,18)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,19,281.0E0,0.0E0,19)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,20,282.0E0,0.0E0,20)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,21,283.0E0,0.0E0,21)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,22,284.0E0,0.0E0,22)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,23,285.0E0,0.0E0,23)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,24,286.0E0,0.0E0,24)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,25,287.0E0,0.0E0,25)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,26,288.0E0,0.0E0,26)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,27,289.0E0,0.0E0,27)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,28,290.0E0,0.0E0,28)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,29,291.0E0,0.0E0,29)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,30,292.0E0,0.0E0,30)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,31,293.0E0,0.0E0,31)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,32,294.0E0,0.0E0,32)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,33,295.0E0,0.0E0,33)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,34,296.0E0,0.0E0,34)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,35,297.0E0,0.0E0,35)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,36,298.0E0,0.0E0,36)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,37,299.0E0,0.0E0,37)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,38,300.0E0,0.0E0,38)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,39,301.0E0,0.0E0,39)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,40,302.0E0,0.0E0,40)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,41,303.0E0,0.0E0,41)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,42,304.0E0,0.0E0,42)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,43,305.0E0,0.0E0,43)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,44,306.0E0,0.0E0,44)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,45,307.0E0,0.0E0,45)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,46,308.0E0,0.0E0,46)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,47,309.0E0,0.0E0,47)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,48,310.0E0,0.0E0,48)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,49,311.0E0,0.0E0,49)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,50,312.0E0,0.0E0,50)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,51,313.0E0,0.0E0,51)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,52,314.0E0,0.0E0,52)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,53,315.0E0,0.0E0,53)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,54,316.0E0,0.0E0,54)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,55,317.0E0,0.0E0,55)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,56,318.0E0,0.0E0,56)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,57,319.0E0,0.0E0,57)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,58,320.0E0,0.0E0,58)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,59,321.0E0,0.0E0,59)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,60,322.0E0,0.0E0,60)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,61,323.0E0,0.0E0,61)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,62,324.0E0,0.0E0,62)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,63,325.0E0,0.0E0,63)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,64,326.0E0,0.0E0,64)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,65,327.0E0,0.0E0,65)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,66,328.0E0,0.0E0,66)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,67,329.0E0,0.0E0,67)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,68,330.0E0,0.0E0,68)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,69,331.0E0,0.0E0,69)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,70,332.0E0,0.0E0,70)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,71,333.0E0,0.0E0,71)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,72,334.0E0,0.0E0,72)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,73,335.0E0,0.0E0,73)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,74,336.0E0,0.0E0,74)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,75,337.0E0,0.0E0,75)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,76,338.0E0,0.0E0,76)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,77,339.0E0,0.0E0,77)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,78,340.0E0,0.0E0,78)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,79,341.0E0,0.0E0,79)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,80,342.0E0,0.0E0,80)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,81,343.0E0,0.0E0,81)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,82,344.0E0,0.0E0,82)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,83,345.0E0,0.0E0,83)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,84,346.0E0,0.0E0,84)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,85,347.0E0,0.0E0,85)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,86,348.0E0,0.0E0,86)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,87,349.0E0,0.0E0,87)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,88,350.0E0,0.0E0,88)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,89,351.0E0,0.0E0,89)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,90,352.0E0,0.0E0,90)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,91,353.0E0,0.0E0,91)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,92,354.0E0,0.0E0,92)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,93,355.0E0,0.0E0,93)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,94,356.0E0,0.0E0,94)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,95,357.0E0,0.0E0,95)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,96,358.0E0,0.0E0,96)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,97,359.0E0,0.0E0,97)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,98,360.0E0,0.0E0,98)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(0,99,361.0E0,0.0E0,99)
+COMMIT
+INSERT INTO AGENT_ELEMENTS_RAW_LOG VALUES(1,0,'chart : Sleeping',1)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,0,262.0E0,21.0E0,100)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,1,263.0E0,21.0E0,101)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,2,264.0E0,21.0E0,102)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,3,265.0E0,21.0E0,103)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,4,266.0E0,21.0E0,104)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,5,267.0E0,21.0E0,105)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,6,268.0E0,21.0E0,106)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,7,269.0E0,21.0E0,107)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,8,270.0E0,21.0E0,108)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,9,271.0E0,21.0E0,109)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,10,272.0E0,21.0E0,110)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,11,273.0E0,21.0E0,111)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,12,274.0E0,21.0E0,112)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,13,275.0E0,21.0E0,113)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,14,276.0E0,21.0E0,114)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,15,277.0E0,21.0E0,115)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,16,278.0E0,21.0E0,116)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,17,279.0E0,21.0E0,117)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,18,280.0E0,21.0E0,118)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,19,281.0E0,21.0E0,119)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,20,282.0E0,21.0E0,120)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,21,283.0E0,21.0E0,121)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,22,284.0E0,21.0E0,122)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,23,285.0E0,21.0E0,123)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,24,286.0E0,21.0E0,124)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,25,287.0E0,21.0E0,125)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,26,288.0E0,21.0E0,126)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,27,289.0E0,21.0E0,127)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,28,290.0E0,21.0E0,128)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,29,291.0E0,21.0E0,129)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,30,292.0E0,21.0E0,130)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,31,293.0E0,21.0E0,131)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,32,294.0E0,21.0E0,132)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,33,295.0E0,21.0E0,133)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,34,296.0E0,21.0E0,134)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,35,297.0E0,21.0E0,135)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,36,298.0E0,21.0E0,136)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,37,299.0E0,21.0E0,137)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,38,300.0E0,21.0E0,138)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,39,301.0E0,21.0E0,139)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,40,302.0E0,21.0E0,140)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,41,303.0E0,21.0E0,141)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,42,304.0E0,21.0E0,142)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,43,305.0E0,21.0E0,143)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,44,306.0E0,21.0E0,144)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,45,307.0E0,21.0E0,145)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,46,308.0E0,21.0E0,146)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,47,309.0E0,21.0E0,147)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,48,310.0E0,21.0E0,148)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,49,311.0E0,21.0E0,149)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,50,312.0E0,21.0E0,150)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,51,313.0E0,21.0E0,151)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,52,314.0E0,21.0E0,152)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,53,315.0E0,21.0E0,153)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,54,316.0E0,21.0E0,154)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,55,317.0E0,21.0E0,155)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,56,318.0E0,21.0E0,156)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,57,319.0E0,21.0E0,157)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,58,320.0E0,21.0E0,158)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,59,321.0E0,21.0E0,159)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,60,322.0E0,21.0E0,160)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,61,323.0E0,21.0E0,161)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,62,324.0E0,21.0E0,162)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,63,325.0E0,21.0E0,163)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,64,326.0E0,21.0E0,164)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,65,327.0E0,21.0E0,165)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,66,328.0E0,21.0E0,166)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,67,329.0E0,21.0E0,167)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,68,330.0E0,21.0E0,168)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,69,331.0E0,21.0E0,169)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,70,332.0E0,21.0E0,170)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,71,333.0E0,21.0E0,171)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,72,334.0E0,21.0E0,172)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,73,335.0E0,21.0E0,173)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,74,336.0E0,21.0E0,174)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,75,337.0E0,21.0E0,175)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,76,338.0E0,21.0E0,176)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,77,339.0E0,21.0E0,177)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,78,340.0E0,21.0E0,178)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,79,341.0E0,21.0E0,179)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,80,342.0E0,21.0E0,180)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,81,343.0E0,21.0E0,181)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,82,344.0E0,21.0E0,182)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,83,345.0E0,21.0E0,183)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,84,346.0E0,21.0E0,184)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,85,347.0E0,21.0E0,185)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,86,348.0E0,21.0E0,186)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,87,349.0E0,21.0E0,187)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,88,350.0E0,21.0E0,188)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,89,351.0E0,21.0E0,189)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,90,352.0E0,21.0E0,190)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,91,353.0E0,21.0E0,191)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,92,354.0E0,21.0E0,192)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,93,355.0E0,21.0E0,193)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,94,356.0E0,21.0E0,194)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,95,357.0E0,21.0E0,195)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,96,358.0E0,21.0E0,196)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,97,359.0E0,21.0E0,197)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,98,360.0E0,21.0E0,198)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(1,99,361.0E0,21.0E0,199)
+COMMIT
+INSERT INTO AGENT_ELEMENTS_RAW_LOG VALUES(2,0,'chart : Exploring',2)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,0,262.0E0,0.0E0,200)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,1,263.0E0,0.0E0,201)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,2,264.0E0,0.0E0,202)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,3,265.0E0,0.0E0,203)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,4,266.0E0,0.0E0,204)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,5,267.0E0,0.0E0,205)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,6,268.0E0,0.0E0,206)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,7,269.0E0,0.0E0,207)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,8,270.0E0,0.0E0,208)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,9,271.0E0,0.0E0,209)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,10,272.0E0,0.0E0,210)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,11,273.0E0,0.0E0,211)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,12,274.0E0,0.0E0,212)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,13,275.0E0,0.0E0,213)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,14,276.0E0,0.0E0,214)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,15,277.0E0,0.0E0,215)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,16,278.0E0,0.0E0,216)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,17,279.0E0,0.0E0,217)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,18,280.0E0,0.0E0,218)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,19,281.0E0,0.0E0,219)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,20,282.0E0,0.0E0,220)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,21,283.0E0,0.0E0,221)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,22,284.0E0,0.0E0,222)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,23,285.0E0,0.0E0,223)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,24,286.0E0,0.0E0,224)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,25,287.0E0,0.0E0,225)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,26,288.0E0,0.0E0,226)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,27,289.0E0,0.0E0,227)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,28,290.0E0,0.0E0,228)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,29,291.0E0,0.0E0,229)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,30,292.0E0,0.0E0,230)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,31,293.0E0,0.0E0,231)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,32,294.0E0,0.0E0,232)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,33,295.0E0,0.0E0,233)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,34,296.0E0,0.0E0,234)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,35,297.0E0,0.0E0,235)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,36,298.0E0,0.0E0,236)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,37,299.0E0,0.0E0,237)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,38,300.0E0,0.0E0,238)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,39,301.0E0,0.0E0,239)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,40,302.0E0,0.0E0,240)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,41,303.0E0,0.0E0,241)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,42,304.0E0,0.0E0,242)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,43,305.0E0,0.0E0,243)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,44,306.0E0,0.0E0,244)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,45,307.0E0,0.0E0,245)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,46,308.0E0,0.0E0,246)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,47,309.0E0,0.0E0,247)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,48,310.0E0,0.0E0,248)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,49,311.0E0,0.0E0,249)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,50,312.0E0,0.0E0,250)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,51,313.0E0,0.0E0,251)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,52,314.0E0,0.0E0,252)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,53,315.0E0,0.0E0,253)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,54,316.0E0,0.0E0,254)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,55,317.0E0,0.0E0,255)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,56,318.0E0,0.0E0,256)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,57,319.0E0,0.0E0,257)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,58,320.0E0,0.0E0,258)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,59,321.0E0,0.0E0,259)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,60,322.0E0,0.0E0,260)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,61,323.0E0,0.0E0,261)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,62,324.0E0,0.0E0,262)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,63,325.0E0,0.0E0,263)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,64,326.0E0,0.0E0,264)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,65,327.0E0,0.0E0,265)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,66,328.0E0,0.0E0,266)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,67,329.0E0,0.0E0,267)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,68,330.0E0,0.0E0,268)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,69,331.0E0,0.0E0,269)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,70,332.0E0,0.0E0,270)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,71,333.0E0,0.0E0,271)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,72,334.0E0,0.0E0,272)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,73,335.0E0,0.0E0,273)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,74,336.0E0,0.0E0,274)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,75,337.0E0,0.0E0,275)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,76,338.0E0,0.0E0,276)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,77,339.0E0,0.0E0,277)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,78,340.0E0,0.0E0,278)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,79,341.0E0,0.0E0,279)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,80,342.0E0,0.0E0,280)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,81,343.0E0,0.0E0,281)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,82,344.0E0,0.0E0,282)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,83,345.0E0,0.0E0,283)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,84,346.0E0,0.0E0,284)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,85,347.0E0,0.0E0,285)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,86,348.0E0,0.0E0,286)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,87,349.0E0,0.0E0,287)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,88,350.0E0,0.0E0,288)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,89,351.0E0,0.0E0,289)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,90,352.0E0,0.0E0,290)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,91,353.0E0,0.0E0,291)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,92,354.0E0,0.0E0,292)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,93,355.0E0,0.0E0,293)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,94,356.0E0,0.0E0,294)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,95,357.0E0,0.0E0,295)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,96,358.0E0,0.0E0,296)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,97,359.0E0,0.0E0,297)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,98,360.0E0,0.0E0,298)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(2,99,361.0E0,0.0E0,299)
+COMMIT
+INSERT INTO AGENT_ELEMENTS_RAW_LOG VALUES(3,0,'chart : In Estrus',3)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,0,262.0E0,1.0E0,300)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,1,263.0E0,1.0E0,301)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,2,264.0E0,1.0E0,302)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,3,265.0E0,1.0E0,303)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,4,266.0E0,1.0E0,304)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,5,267.0E0,1.0E0,305)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,6,268.0E0,1.0E0,306)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,7,269.0E0,1.0E0,307)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,8,270.0E0,1.0E0,308)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,9,271.0E0,1.0E0,309)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,10,272.0E0,1.0E0,310)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,11,273.0E0,1.0E0,311)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,12,274.0E0,1.0E0,312)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,13,275.0E0,1.0E0,313)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,14,276.0E0,1.0E0,314)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,15,277.0E0,1.0E0,315)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,16,278.0E0,1.0E0,316)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,17,279.0E0,1.0E0,317)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,18,280.0E0,1.0E0,318)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,19,281.0E0,1.0E0,319)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,20,282.0E0,1.0E0,320)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,21,283.0E0,1.0E0,321)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,22,284.0E0,1.0E0,322)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,23,285.0E0,1.0E0,323)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,24,286.0E0,1.0E0,324)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,25,287.0E0,1.0E0,325)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,26,288.0E0,1.0E0,326)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,27,289.0E0,1.0E0,327)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,28,290.0E0,1.0E0,328)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,29,291.0E0,1.0E0,329)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,30,292.0E0,1.0E0,330)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,31,293.0E0,1.0E0,331)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,32,294.0E0,1.0E0,332)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,33,295.0E0,1.0E0,333)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,34,296.0E0,1.0E0,334)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,35,297.0E0,1.0E0,335)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,36,298.0E0,1.0E0,336)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,37,299.0E0,1.0E0,337)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,38,300.0E0,1.0E0,338)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,39,301.0E0,1.0E0,339)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,40,302.0E0,1.0E0,340)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,41,303.0E0,1.0E0,341)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,42,304.0E0,1.0E0,342)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,43,305.0E0,1.0E0,343)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,44,306.0E0,1.0E0,344)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,45,307.0E0,1.0E0,345)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,46,308.0E0,1.0E0,346)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,47,309.0E0,1.0E0,347)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,48,310.0E0,1.0E0,348)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,49,311.0E0,1.0E0,349)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,50,312.0E0,1.0E0,350)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,51,313.0E0,1.0E0,351)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,52,314.0E0,1.0E0,352)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,53,315.0E0,1.0E0,353)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,54,316.0E0,1.0E0,354)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,55,317.0E0,1.0E0,355)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,56,318.0E0,1.0E0,356)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,57,319.0E0,1.0E0,357)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,58,320.0E0,1.0E0,358)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,59,321.0E0,1.0E0,359)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,60,322.0E0,1.0E0,360)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,61,323.0E0,1.0E0,361)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,62,324.0E0,1.0E0,362)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,63,325.0E0,1.0E0,363)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,64,326.0E0,1.0E0,364)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,65,327.0E0,1.0E0,365)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,66,328.0E0,1.0E0,366)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,67,329.0E0,1.0E0,367)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,68,330.0E0,1.0E0,368)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,69,331.0E0,1.0E0,369)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,70,332.0E0,1.0E0,370)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,71,333.0E0,1.0E0,371)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,72,334.0E0,1.0E0,372)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,73,335.0E0,1.0E0,373)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,74,336.0E0,1.0E0,374)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,75,337.0E0,1.0E0,375)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,76,338.0E0,1.0E0,376)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,77,339.0E0,1.0E0,377)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,78,340.0E0,1.0E0,378)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,79,341.0E0,1.0E0,379)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,80,342.0E0,1.0E0,380)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,81,343.0E0,1.0E0,381)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,82,344.0E0,1.0E0,382)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,83,345.0E0,1.0E0,383)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,84,346.0E0,1.0E0,384)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,85,347.0E0,1.0E0,385)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,86,348.0E0,1.0E0,386)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,87,349.0E0,1.0E0,387)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,88,350.0E0,1.0E0,388)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,89,351.0E0,1.0E0,389)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,90,352.0E0,1.0E0,390)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,91,353.0E0,1.0E0,391)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,92,354.0E0,1.0E0,392)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,93,355.0E0,1.0E0,393)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,94,356.0E0,1.0E0,394)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,95,357.0E0,1.0E0,395)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,96,358.0E0,1.0E0,396)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,97,359.0E0,1.0E0,397)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,98,360.0E0,1.0E0,398)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(3,99,361.0E0,1.0E0,399)
+COMMIT
+INSERT INTO AGENT_ELEMENTS_RAW_LOG VALUES(4,0,'chart : Copulating',4)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,0,262.0E0,0.0E0,400)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,1,263.0E0,0.0E0,401)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,2,264.0E0,0.0E0,402)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,3,265.0E0,0.0E0,403)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,4,266.0E0,0.0E0,404)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,5,267.0E0,0.0E0,405)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,6,268.0E0,0.0E0,406)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,7,269.0E0,0.0E0,407)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,8,270.0E0,0.0E0,408)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,9,271.0E0,0.0E0,409)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,10,272.0E0,0.0E0,410)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,11,273.0E0,0.0E0,411)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,12,274.0E0,0.0E0,412)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,13,275.0E0,0.0E0,413)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,14,276.0E0,0.0E0,414)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,15,277.0E0,0.0E0,415)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,16,278.0E0,0.0E0,416)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,17,279.0E0,0.0E0,417)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,18,280.0E0,0.0E0,418)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,19,281.0E0,0.0E0,419)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,20,282.0E0,0.0E0,420)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,21,283.0E0,0.0E0,421)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,22,284.0E0,0.0E0,422)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,23,285.0E0,0.0E0,423)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,24,286.0E0,0.0E0,424)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,25,287.0E0,0.0E0,425)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,26,288.0E0,0.0E0,426)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,27,289.0E0,0.0E0,427)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,28,290.0E0,0.0E0,428)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,29,291.0E0,0.0E0,429)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,30,292.0E0,0.0E0,430)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,31,293.0E0,0.0E0,431)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,32,294.0E0,0.0E0,432)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,33,295.0E0,0.0E0,433)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,34,296.0E0,0.0E0,434)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,35,297.0E0,0.0E0,435)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,36,298.0E0,0.0E0,436)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,37,299.0E0,0.0E0,437)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,38,300.0E0,0.0E0,438)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,39,301.0E0,0.0E0,439)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,40,302.0E0,0.0E0,440)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,41,303.0E0,0.0E0,441)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,42,304.0E0,0.0E0,442)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,43,305.0E0,0.0E0,443)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,44,306.0E0,0.0E0,444)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,45,307.0E0,0.0E0,445)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,46,308.0E0,0.0E0,446)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,47,309.0E0,0.0E0,447)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,48,310.0E0,0.0E0,448)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,49,311.0E0,0.0E0,449)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,50,312.0E0,0.0E0,450)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,51,313.0E0,0.0E0,451)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,52,314.0E0,0.0E0,452)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,53,315.0E0,0.0E0,453)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,54,316.0E0,0.0E0,454)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,55,317.0E0,0.0E0,455)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,56,318.0E0,0.0E0,456)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,57,319.0E0,0.0E0,457)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,58,320.0E0,0.0E0,458)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,59,321.0E0,0.0E0,459)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,60,322.0E0,0.0E0,460)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,61,323.0E0,0.0E0,461)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,62,324.0E0,0.0E0,462)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,63,325.0E0,0.0E0,463)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,64,326.0E0,0.0E0,464)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,65,327.0E0,0.0E0,465)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,66,328.0E0,0.0E0,466)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,67,329.0E0,0.0E0,467)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,68,330.0E0,0.0E0,468)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,69,331.0E0,0.0E0,469)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,70,332.0E0,0.0E0,470)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,71,333.0E0,0.0E0,471)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,72,334.0E0,0.0E0,472)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,73,335.0E0,0.0E0,473)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,74,336.0E0,0.0E0,474)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,75,337.0E0,0.0E0,475)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,76,338.0E0,0.0E0,476)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,77,339.0E0,0.0E0,477)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,78,340.0E0,0.0E0,478)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,79,341.0E0,0.0E0,479)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,80,342.0E0,0.0E0,480)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,81,343.0E0,0.0E0,481)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,82,344.0E0,0.0E0,482)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,83,345.0E0,0.0E0,483)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,84,346.0E0,0.0E0,484)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,85,347.0E0,0.0E0,485)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,86,348.0E0,0.0E0,486)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,87,349.0E0,0.0E0,487)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,88,350.0E0,0.0E0,488)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,89,351.0E0,0.0E0,489)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,90,352.0E0,0.0E0,490)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,91,353.0E0,0.0E0,491)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,92,354.0E0,0.0E0,492)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,93,355.0E0,0.0E0,493)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,94,356.0E0,0.0E0,494)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,95,357.0E0,0.0E0,495)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,96,358.0E0,0.0E0,496)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,97,359.0E0,0.0E0,497)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,98,360.0E0,0.0E0,498)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(4,99,361.0E0,0.0E0,499)
+COMMIT
+INSERT INTO AGENT_ELEMENTS_RAW_LOG VALUES(5,0,'chart : Beeing Fed',5)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,0,262.0E0,0.0E0,500)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,1,263.0E0,0.0E0,501)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,2,264.0E0,0.0E0,502)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,3,265.0E0,0.0E0,503)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,4,266.0E0,0.0E0,504)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,5,267.0E0,0.0E0,505)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,6,268.0E0,0.0E0,506)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,7,269.0E0,0.0E0,507)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,8,270.0E0,0.0E0,508)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,9,271.0E0,0.0E0,509)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,10,272.0E0,0.0E0,510)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,11,273.0E0,0.0E0,511)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,12,274.0E0,0.0E0,512)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,13,275.0E0,0.0E0,513)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,14,276.0E0,0.0E0,514)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,15,277.0E0,0.0E0,515)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,16,278.0E0,0.0E0,516)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,17,279.0E0,0.0E0,517)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,18,280.0E0,0.0E0,518)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,19,281.0E0,0.0E0,519)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,20,282.0E0,0.0E0,520)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,21,283.0E0,0.0E0,521)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,22,284.0E0,0.0E0,522)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,23,285.0E0,0.0E0,523)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,24,286.0E0,0.0E0,524)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,25,287.0E0,0.0E0,525)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,26,288.0E0,0.0E0,526)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,27,289.0E0,0.0E0,527)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,28,290.0E0,0.0E0,528)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,29,291.0E0,0.0E0,529)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,30,292.0E0,0.0E0,530)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,31,293.0E0,0.0E0,531)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,32,294.0E0,0.0E0,532)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,33,295.0E0,0.0E0,533)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,34,296.0E0,0.0E0,534)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,35,297.0E0,0.0E0,535)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,36,298.0E0,0.0E0,536)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,37,299.0E0,0.0E0,537)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,38,300.0E0,0.0E0,538)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,39,301.0E0,0.0E0,539)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,40,302.0E0,0.0E0,540)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,41,303.0E0,0.0E0,541)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,42,304.0E0,0.0E0,542)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,43,305.0E0,0.0E0,543)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,44,306.0E0,0.0E0,544)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,45,307.0E0,0.0E0,545)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,46,308.0E0,0.0E0,546)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,47,309.0E0,0.0E0,547)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,48,310.0E0,0.0E0,548)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,49,311.0E0,0.0E0,549)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,50,312.0E0,0.0E0,550)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,51,313.0E0,0.0E0,551)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,52,314.0E0,0.0E0,552)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,53,315.0E0,0.0E0,553)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,54,316.0E0,0.0E0,554)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,55,317.0E0,0.0E0,555)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,56,318.0E0,0.0E0,556)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,57,319.0E0,0.0E0,557)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,58,320.0E0,0.0E0,558)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,59,321.0E0,0.0E0,559)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,60,322.0E0,0.0E0,560)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,61,323.0E0,0.0E0,561)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,62,324.0E0,0.0E0,562)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,63,325.0E0,0.0E0,563)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,64,326.0E0,0.0E0,564)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,65,327.0E0,0.0E0,565)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,66,328.0E0,0.0E0,566)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,67,329.0E0,0.0E0,567)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,68,330.0E0,0.0E0,568)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,69,331.0E0,0.0E0,569)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,70,332.0E0,0.0E0,570)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,71,333.0E0,0.0E0,571)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,72,334.0E0,0.0E0,572)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,73,335.0E0,1.0E0,573)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,74,336.0E0,1.0E0,574)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,75,337.0E0,1.0E0,575)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,76,338.0E0,1.0E0,576)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,77,339.0E0,1.0E0,577)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,78,340.0E0,1.0E0,578)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,79,341.0E0,1.0E0,579)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,80,342.0E0,1.0E0,580)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,81,343.0E0,1.0E0,581)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,82,344.0E0,1.0E0,582)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,83,345.0E0,1.0E0,583)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,84,346.0E0,1.0E0,584)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,85,347.0E0,0.0E0,585)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,86,348.0E0,0.0E0,586)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,87,349.0E0,0.0E0,587)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,88,350.0E0,0.0E0,588)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,89,351.0E0,0.0E0,589)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,90,352.0E0,0.0E0,590)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,91,353.0E0,0.0E0,591)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,92,354.0E0,0.0E0,592)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,93,355.0E0,0.0E0,593)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,94,356.0E0,0.0E0,594)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,95,357.0E0,0.0E0,595)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,96,358.0E0,0.0E0,596)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,97,359.0E0,0.0E0,597)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,98,360.0E0,0.0E0,598)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(5,99,361.0E0,0.0E0,599)
+COMMIT
+INSERT INTO AGENT_ELEMENTS_RAW_LOG VALUES(6,0,'chart1 : Foraging',6)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,0,262.0E0,0.0E0,600)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,1,263.0E0,0.0E0,601)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,2,264.0E0,0.0E0,602)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,3,265.0E0,0.0E0,603)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,4,266.0E0,0.0E0,604)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,5,267.0E0,0.0E0,605)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,6,268.0E0,0.0E0,606)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,7,269.0E0,0.0E0,607)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,8,270.0E0,0.0E0,608)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,9,271.0E0,0.0E0,609)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,10,272.0E0,0.0E0,610)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,11,273.0E0,0.0E0,611)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,12,274.0E0,0.0E0,612)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,13,275.0E0,0.0E0,613)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,14,276.0E0,0.0E0,614)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,15,277.0E0,0.0E0,615)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,16,278.0E0,0.0E0,616)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,17,279.0E0,0.0E0,617)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,18,280.0E0,0.0E0,618)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,19,281.0E0,0.0E0,619)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,20,282.0E0,0.0E0,620)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,21,283.0E0,0.0E0,621)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,22,284.0E0,0.0E0,622)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,23,285.0E0,0.0E0,623)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,24,286.0E0,0.0E0,624)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,25,287.0E0,0.0E0,625)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,26,288.0E0,0.0E0,626)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,27,289.0E0,0.0E0,627)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,28,290.0E0,0.0E0,628)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,29,291.0E0,0.0E0,629)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,30,292.0E0,0.0E0,630)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,31,293.0E0,0.0E0,631)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,32,294.0E0,0.0E0,632)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,33,295.0E0,0.0E0,633)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,34,296.0E0,0.0E0,634)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,35,297.0E0,0.0E0,635)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,36,298.0E0,0.0E0,636)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,37,299.0E0,0.0E0,637)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,38,300.0E0,0.0E0,638)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,39,301.0E0,0.0E0,639)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,40,302.0E0,0.0E0,640)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,41,303.0E0,0.0E0,641)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,42,304.0E0,0.0E0,642)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,43,305.0E0,0.0E0,643)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,44,306.0E0,0.0E0,644)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,45,307.0E0,0.0E0,645)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,46,308.0E0,0.0E0,646)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,47,309.0E0,0.0E0,647)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,48,310.0E0,0.0E0,648)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,49,311.0E0,0.0E0,649)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,50,312.0E0,0.0E0,650)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,51,313.0E0,0.0E0,651)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,52,314.0E0,0.0E0,652)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,53,315.0E0,0.0E0,653)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,54,316.0E0,0.0E0,654)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,55,317.0E0,0.0E0,655)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,56,318.0E0,0.0E0,656)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,57,319.0E0,0.0E0,657)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,58,320.0E0,0.0E0,658)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,59,321.0E0,0.0E0,659)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,60,322.0E0,0.0E0,660)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,61,323.0E0,0.0E0,661)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,62,324.0E0,0.0E0,662)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,63,325.0E0,0.0E0,663)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,64,326.0E0,0.0E0,664)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,65,327.0E0,0.0E0,665)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,66,328.0E0,0.0E0,666)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,67,329.0E0,0.0E0,667)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,68,330.0E0,0.0E0,668)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,69,331.0E0,0.0E0,669)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,70,332.0E0,0.0E0,670)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,71,333.0E0,0.0E0,671)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,72,334.0E0,0.0E0,672)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,73,335.0E0,0.0E0,673)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,74,336.0E0,0.0E0,674)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,75,337.0E0,0.0E0,675)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,76,338.0E0,0.0E0,676)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,77,339.0E0,0.0E0,677)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,78,340.0E0,0.0E0,678)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,79,341.0E0,0.0E0,679)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,80,342.0E0,0.0E0,680)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,81,343.0E0,0.0E0,681)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,82,344.0E0,0.0E0,682)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,83,345.0E0,0.0E0,683)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,84,346.0E0,0.0E0,684)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,85,347.0E0,1.0E0,685)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,86,348.0E0,1.0E0,686)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,87,349.0E0,1.0E0,687)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,88,350.0E0,1.0E0,688)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,89,351.0E0,1.0E0,689)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,90,352.0E0,1.0E0,690)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,91,353.0E0,1.0E0,691)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,92,354.0E0,0.0E0,692)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,93,355.0E0,1.0E0,693)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,94,356.0E0,1.0E0,694)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,95,357.0E0,1.0E0,695)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,96,358.0E0,1.0E0,696)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,97,359.0E0,1.0E0,697)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,98,360.0E0,1.0E0,698)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(6,99,361.0E0,1.0E0,699)
+COMMIT
+INSERT INTO AGENT_ELEMENTS_RAW_LOG VALUES(7,0,'chart1 : Sleeping',7)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,0,262.0E0,20.0E0,700)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,1,263.0E0,20.0E0,701)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,2,264.0E0,20.0E0,702)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,3,265.0E0,20.0E0,703)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,4,266.0E0,20.0E0,704)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,5,267.0E0,20.0E0,705)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,6,268.0E0,20.0E0,706)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,7,269.0E0,20.0E0,707)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,8,270.0E0,20.0E0,708)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,9,271.0E0,20.0E0,709)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,10,272.0E0,20.0E0,710)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,11,273.0E0,20.0E0,711)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,12,274.0E0,20.0E0,712)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,13,275.0E0,20.0E0,713)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,14,276.0E0,20.0E0,714)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,15,277.0E0,20.0E0,715)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,16,278.0E0,20.0E0,716)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,17,279.0E0,20.0E0,717)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,18,280.0E0,20.0E0,718)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,19,281.0E0,20.0E0,719)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,20,282.0E0,20.0E0,720)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,21,283.0E0,20.0E0,721)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,22,284.0E0,20.0E0,722)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,23,285.0E0,20.0E0,723)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,24,286.0E0,20.0E0,724)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,25,287.0E0,20.0E0,725)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,26,288.0E0,20.0E0,726)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,27,289.0E0,20.0E0,727)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,28,290.0E0,20.0E0,728)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,29,291.0E0,20.0E0,729)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,30,292.0E0,20.0E0,730)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,31,293.0E0,20.0E0,731)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,32,294.0E0,20.0E0,732)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,33,295.0E0,20.0E0,733)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,34,296.0E0,20.0E0,734)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,35,297.0E0,20.0E0,735)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,36,298.0E0,20.0E0,736)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,37,299.0E0,20.0E0,737)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,38,300.0E0,20.0E0,738)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,39,301.0E0,20.0E0,739)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,40,302.0E0,20.0E0,740)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,41,303.0E0,20.0E0,741)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,42,304.0E0,20.0E0,742)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,43,305.0E0,20.0E0,743)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,44,306.0E0,20.0E0,744)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,45,307.0E0,20.0E0,745)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,46,308.0E0,20.0E0,746)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,47,309.0E0,20.0E0,747)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,48,310.0E0,20.0E0,748)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,49,311.0E0,20.0E0,749)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,50,312.0E0,20.0E0,750)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,51,313.0E0,20.0E0,751)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,52,314.0E0,20.0E0,752)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,53,315.0E0,20.0E0,753)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,54,316.0E0,20.0E0,754)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,55,317.0E0,20.0E0,755)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,56,318.0E0,20.0E0,756)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,57,319.0E0,20.0E0,757)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,58,320.0E0,20.0E0,758)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,59,321.0E0,20.0E0,759)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,60,322.0E0,20.0E0,760)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,61,323.0E0,20.0E0,761)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,62,324.0E0,20.0E0,762)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,63,325.0E0,20.0E0,763)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,64,326.0E0,20.0E0,764)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,65,327.0E0,20.0E0,765)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,66,328.0E0,20.0E0,766)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,67,329.0E0,20.0E0,767)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,68,330.0E0,20.0E0,768)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,69,331.0E0,20.0E0,769)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,70,332.0E0,20.0E0,770)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,71,333.0E0,20.0E0,771)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,72,334.0E0,19.0E0,772)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,73,335.0E0,19.0E0,773)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,74,336.0E0,19.0E0,774)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,75,337.0E0,19.0E0,775)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,76,338.0E0,19.0E0,776)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,77,339.0E0,19.0E0,777)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,78,340.0E0,19.0E0,778)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,79,341.0E0,19.0E0,779)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,80,342.0E0,19.0E0,780)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,81,343.0E0,19.0E0,781)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,82,344.0E0,19.0E0,782)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,83,345.0E0,18.0E0,783)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,84,346.0E0,18.0E0,784)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,85,347.0E0,18.0E0,785)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,86,348.0E0,18.0E0,786)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,87,349.0E0,18.0E0,787)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,88,350.0E0,18.0E0,788)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,89,351.0E0,18.0E0,789)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,90,352.0E0,18.0E0,790)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,91,353.0E0,18.0E0,791)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,92,354.0E0,18.0E0,792)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,93,355.0E0,18.0E0,793)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,94,356.0E0,18.0E0,794)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,95,357.0E0,18.0E0,795)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,96,358.0E0,18.0E0,796)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,97,359.0E0,18.0E0,797)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,98,360.0E0,18.0E0,798)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(7,99,361.0E0,17.0E0,799)
+COMMIT
+INSERT INTO AGENT_ELEMENTS_RAW_LOG VALUES(8,0,'chart1 : Exploring',8)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,0,262.0E0,0.0E0,800)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,1,263.0E0,0.0E0,801)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,2,264.0E0,0.0E0,802)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,3,265.0E0,0.0E0,803)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,4,266.0E0,0.0E0,804)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,5,267.0E0,0.0E0,805)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,6,268.0E0,0.0E0,806)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,7,269.0E0,0.0E0,807)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,8,270.0E0,0.0E0,808)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,9,271.0E0,0.0E0,809)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,10,272.0E0,0.0E0,810)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,11,273.0E0,0.0E0,811)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,12,274.0E0,0.0E0,812)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,13,275.0E0,0.0E0,813)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,14,276.0E0,0.0E0,814)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,15,277.0E0,0.0E0,815)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,16,278.0E0,0.0E0,816)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,17,279.0E0,0.0E0,817)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,18,280.0E0,0.0E0,818)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,19,281.0E0,0.0E0,819)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,20,282.0E0,0.0E0,820)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,21,283.0E0,0.0E0,821)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,22,284.0E0,0.0E0,822)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,23,285.0E0,0.0E0,823)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,24,286.0E0,0.0E0,824)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,25,287.0E0,0.0E0,825)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,26,288.0E0,0.0E0,826)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,27,289.0E0,0.0E0,827)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,28,290.0E0,0.0E0,828)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,29,291.0E0,0.0E0,829)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,30,292.0E0,0.0E0,830)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,31,293.0E0,0.0E0,831)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,32,294.0E0,0.0E0,832)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,33,295.0E0,0.0E0,833)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,34,296.0E0,0.0E0,834)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,35,297.0E0,0.0E0,835)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,36,298.0E0,0.0E0,836)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,37,299.0E0,0.0E0,837)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,38,300.0E0,0.0E0,838)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,39,301.0E0,0.0E0,839)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,40,302.0E0,0.0E0,840)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,41,303.0E0,0.0E0,841)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,42,304.0E0,0.0E0,842)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,43,305.0E0,0.0E0,843)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,44,306.0E0,0.0E0,844)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,45,307.0E0,0.0E0,845)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,46,308.0E0,0.0E0,846)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,47,309.0E0,0.0E0,847)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,48,310.0E0,0.0E0,848)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,49,311.0E0,0.0E0,849)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,50,312.0E0,0.0E0,850)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,51,313.0E0,0.0E0,851)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,52,314.0E0,0.0E0,852)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,53,315.0E0,0.0E0,853)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,54,316.0E0,0.0E0,854)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,55,317.0E0,0.0E0,855)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,56,318.0E0,0.0E0,856)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,57,319.0E0,0.0E0,857)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,58,320.0E0,0.0E0,858)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,59,321.0E0,0.0E0,859)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,60,322.0E0,0.0E0,860)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,61,323.0E0,0.0E0,861)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,62,324.0E0,0.0E0,862)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,63,325.0E0,0.0E0,863)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,64,326.0E0,0.0E0,864)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,65,327.0E0,0.0E0,865)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,66,328.0E0,0.0E0,866)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,67,329.0E0,0.0E0,867)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,68,330.0E0,0.0E0,868)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,69,331.0E0,0.0E0,869)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,70,332.0E0,0.0E0,870)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,71,333.0E0,0.0E0,871)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,72,334.0E0,1.0E0,872)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,73,335.0E0,0.0E0,873)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,74,336.0E0,0.0E0,874)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,75,337.0E0,0.0E0,875)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,76,338.0E0,0.0E0,876)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,77,339.0E0,0.0E0,877)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,78,340.0E0,0.0E0,878)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,79,341.0E0,0.0E0,879)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,80,342.0E0,0.0E0,880)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,81,343.0E0,0.0E0,881)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,82,344.0E0,0.0E0,882)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,83,345.0E0,1.0E0,883)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,84,346.0E0,1.0E0,884)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,85,347.0E0,1.0E0,885)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,86,348.0E0,0.0E0,886)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,87,349.0E0,0.0E0,887)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,88,350.0E0,0.0E0,888)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,89,351.0E0,0.0E0,889)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,90,352.0E0,0.0E0,890)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,91,353.0E0,0.0E0,891)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,92,354.0E0,1.0E0,892)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,93,355.0E0,1.0E0,893)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,94,356.0E0,1.0E0,894)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,95,357.0E0,1.0E0,895)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,96,358.0E0,1.0E0,896)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,97,359.0E0,1.0E0,897)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,98,360.0E0,1.0E0,898)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(8,99,361.0E0,2.0E0,899)
+COMMIT
+INSERT INTO AGENT_ELEMENTS_RAW_LOG VALUES(9,0,'chart1 : In Estrus',9)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,0,262.0E0,0.0E0,900)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,1,263.0E0,0.0E0,901)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,2,264.0E0,0.0E0,902)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,3,265.0E0,0.0E0,903)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,4,266.0E0,0.0E0,904)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,5,267.0E0,0.0E0,905)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,6,268.0E0,0.0E0,906)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,7,269.0E0,0.0E0,907)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,8,270.0E0,0.0E0,908)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,9,271.0E0,0.0E0,909)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,10,272.0E0,0.0E0,910)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,11,273.0E0,0.0E0,911)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,12,274.0E0,0.0E0,912)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,13,275.0E0,0.0E0,913)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,14,276.0E0,0.0E0,914)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,15,277.0E0,0.0E0,915)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,16,278.0E0,0.0E0,916)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,17,279.0E0,0.0E0,917)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,18,280.0E0,0.0E0,918)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,19,281.0E0,0.0E0,919)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,20,282.0E0,0.0E0,920)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,21,283.0E0,0.0E0,921)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,22,284.0E0,0.0E0,922)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,23,285.0E0,0.0E0,923)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,24,286.0E0,0.0E0,924)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,25,287.0E0,0.0E0,925)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,26,288.0E0,0.0E0,926)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,27,289.0E0,0.0E0,927)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,28,290.0E0,0.0E0,928)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,29,291.0E0,0.0E0,929)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,30,292.0E0,0.0E0,930)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,31,293.0E0,0.0E0,931)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,32,294.0E0,0.0E0,932)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,33,295.0E0,0.0E0,933)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,34,296.0E0,0.0E0,934)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,35,297.0E0,0.0E0,935)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,36,298.0E0,0.0E0,936)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,37,299.0E0,0.0E0,937)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,38,300.0E0,0.0E0,938)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,39,301.0E0,0.0E0,939)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,40,302.0E0,0.0E0,940)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,41,303.0E0,0.0E0,941)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,42,304.0E0,0.0E0,942)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,43,305.0E0,0.0E0,943)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,44,306.0E0,0.0E0,944)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,45,307.0E0,0.0E0,945)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,46,308.0E0,0.0E0,946)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,47,309.0E0,0.0E0,947)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,48,310.0E0,0.0E0,948)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,49,311.0E0,0.0E0,949)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,50,312.0E0,0.0E0,950)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,51,313.0E0,0.0E0,951)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,52,314.0E0,0.0E0,952)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,53,315.0E0,0.0E0,953)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,54,316.0E0,0.0E0,954)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,55,317.0E0,0.0E0,955)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,56,318.0E0,0.0E0,956)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,57,319.0E0,0.0E0,957)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,58,320.0E0,0.0E0,958)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,59,321.0E0,0.0E0,959)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,60,322.0E0,0.0E0,960)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,61,323.0E0,0.0E0,961)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,62,324.0E0,0.0E0,962)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,63,325.0E0,0.0E0,963)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,64,326.0E0,0.0E0,964)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,65,327.0E0,0.0E0,965)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,66,328.0E0,0.0E0,966)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,67,329.0E0,0.0E0,967)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,68,330.0E0,0.0E0,968)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,69,331.0E0,0.0E0,969)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,70,332.0E0,0.0E0,970)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,71,333.0E0,0.0E0,971)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,72,334.0E0,0.0E0,972)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,73,335.0E0,0.0E0,973)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,74,336.0E0,0.0E0,974)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,75,337.0E0,0.0E0,975)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,76,338.0E0,0.0E0,976)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,77,339.0E0,0.0E0,977)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,78,340.0E0,0.0E0,978)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,79,341.0E0,0.0E0,979)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,80,342.0E0,0.0E0,980)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,81,343.0E0,0.0E0,981)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,82,344.0E0,0.0E0,982)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,83,345.0E0,0.0E0,983)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,84,346.0E0,0.0E0,984)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,85,347.0E0,0.0E0,985)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,86,348.0E0,0.0E0,986)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,87,349.0E0,0.0E0,987)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,88,350.0E0,0.0E0,988)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,89,351.0E0,0.0E0,989)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,90,352.0E0,0.0E0,990)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,91,353.0E0,0.0E0,991)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,92,354.0E0,0.0E0,992)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,93,355.0E0,0.0E0,993)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,94,356.0E0,0.0E0,994)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,95,357.0E0,0.0E0,995)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,96,358.0E0,0.0E0,996)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,97,359.0E0,0.0E0,997)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,98,360.0E0,0.0E0,998)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(9,99,361.0E0,0.0E0,999)
+COMMIT
+INSERT INTO AGENT_ELEMENTS_RAW_LOG VALUES(10,0,'chart1 : Copulating',10)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,0,262.0E0,0.0E0,1000)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,1,263.0E0,0.0E0,1001)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,2,264.0E0,0.0E0,1002)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,3,265.0E0,0.0E0,1003)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,4,266.0E0,0.0E0,1004)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,5,267.0E0,0.0E0,1005)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,6,268.0E0,0.0E0,1006)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,7,269.0E0,0.0E0,1007)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,8,270.0E0,0.0E0,1008)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,9,271.0E0,0.0E0,1009)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,10,272.0E0,0.0E0,1010)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,11,273.0E0,0.0E0,1011)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,12,274.0E0,0.0E0,1012)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,13,275.0E0,0.0E0,1013)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,14,276.0E0,0.0E0,1014)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,15,277.0E0,0.0E0,1015)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,16,278.0E0,0.0E0,1016)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,17,279.0E0,0.0E0,1017)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,18,280.0E0,0.0E0,1018)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,19,281.0E0,0.0E0,1019)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,20,282.0E0,0.0E0,1020)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,21,283.0E0,0.0E0,1021)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,22,284.0E0,0.0E0,1022)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,23,285.0E0,0.0E0,1023)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,24,286.0E0,0.0E0,1024)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,25,287.0E0,0.0E0,1025)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,26,288.0E0,0.0E0,1026)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,27,289.0E0,0.0E0,1027)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,28,290.0E0,0.0E0,1028)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,29,291.0E0,0.0E0,1029)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,30,292.0E0,0.0E0,1030)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,31,293.0E0,0.0E0,1031)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,32,294.0E0,0.0E0,1032)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,33,295.0E0,0.0E0,1033)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,34,296.0E0,0.0E0,1034)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,35,297.0E0,0.0E0,1035)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,36,298.0E0,0.0E0,1036)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,37,299.0E0,0.0E0,1037)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,38,300.0E0,0.0E0,1038)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,39,301.0E0,0.0E0,1039)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,40,302.0E0,0.0E0,1040)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,41,303.0E0,0.0E0,1041)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,42,304.0E0,0.0E0,1042)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,43,305.0E0,0.0E0,1043)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,44,306.0E0,0.0E0,1044)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,45,307.0E0,0.0E0,1045)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,46,308.0E0,0.0E0,1046)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,47,309.0E0,0.0E0,1047)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,48,310.0E0,0.0E0,1048)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,49,311.0E0,0.0E0,1049)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,50,312.0E0,0.0E0,1050)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,51,313.0E0,0.0E0,1051)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,52,314.0E0,0.0E0,1052)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,53,315.0E0,0.0E0,1053)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,54,316.0E0,0.0E0,1054)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,55,317.0E0,0.0E0,1055)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,56,318.0E0,0.0E0,1056)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,57,319.0E0,0.0E0,1057)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,58,320.0E0,0.0E0,1058)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,59,321.0E0,0.0E0,1059)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,60,322.0E0,0.0E0,1060)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,61,323.0E0,0.0E0,1061)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,62,324.0E0,0.0E0,1062)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,63,325.0E0,0.0E0,1063)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,64,326.0E0,0.0E0,1064)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,65,327.0E0,0.0E0,1065)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,66,328.0E0,0.0E0,1066)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,67,329.0E0,0.0E0,1067)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,68,330.0E0,0.0E0,1068)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,69,331.0E0,0.0E0,1069)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,70,332.0E0,0.0E0,1070)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,71,333.0E0,0.0E0,1071)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,72,334.0E0,0.0E0,1072)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,73,335.0E0,0.0E0,1073)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,74,336.0E0,0.0E0,1074)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,75,337.0E0,0.0E0,1075)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,76,338.0E0,0.0E0,1076)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,77,339.0E0,0.0E0,1077)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,78,340.0E0,0.0E0,1078)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,79,341.0E0,0.0E0,1079)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,80,342.0E0,0.0E0,1080)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,81,343.0E0,0.0E0,1081)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,82,344.0E0,0.0E0,1082)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,83,345.0E0,0.0E0,1083)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,84,346.0E0,0.0E0,1084)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,85,347.0E0,0.0E0,1085)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,86,348.0E0,0.0E0,1086)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,87,349.0E0,0.0E0,1087)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,88,350.0E0,0.0E0,1088)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,89,351.0E0,0.0E0,1089)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,90,352.0E0,0.0E0,1090)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,91,353.0E0,0.0E0,1091)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,92,354.0E0,0.0E0,1092)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,93,355.0E0,0.0E0,1093)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,94,356.0E0,0.0E0,1094)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,95,357.0E0,0.0E0,1095)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,96,358.0E0,0.0E0,1096)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,97,359.0E0,0.0E0,1097)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,98,360.0E0,0.0E0,1098)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(10,99,361.0E0,0.0E0,1099)
+COMMIT
+INSERT INTO AGENT_ELEMENTS_RAW_LOG VALUES(11,0,'chart1 : Feeding',11)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,0,262.0E0,0.0E0,1100)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,1,263.0E0,0.0E0,1101)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,2,264.0E0,0.0E0,1102)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,3,265.0E0,0.0E0,1103)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,4,266.0E0,0.0E0,1104)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,5,267.0E0,0.0E0,1105)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,6,268.0E0,0.0E0,1106)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,7,269.0E0,0.0E0,1107)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,8,270.0E0,0.0E0,1108)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,9,271.0E0,0.0E0,1109)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,10,272.0E0,0.0E0,1110)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,11,273.0E0,0.0E0,1111)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,12,274.0E0,0.0E0,1112)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,13,275.0E0,0.0E0,1113)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,14,276.0E0,0.0E0,1114)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,15,277.0E0,0.0E0,1115)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,16,278.0E0,0.0E0,1116)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,17,279.0E0,0.0E0,1117)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,18,280.0E0,0.0E0,1118)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,19,281.0E0,0.0E0,1119)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,20,282.0E0,0.0E0,1120)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,21,283.0E0,0.0E0,1121)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,22,284.0E0,0.0E0,1122)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,23,285.0E0,0.0E0,1123)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,24,286.0E0,0.0E0,1124)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,25,287.0E0,0.0E0,1125)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,26,288.0E0,0.0E0,1126)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,27,289.0E0,0.0E0,1127)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,28,290.0E0,0.0E0,1128)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,29,291.0E0,0.0E0,1129)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,30,292.0E0,0.0E0,1130)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,31,293.0E0,0.0E0,1131)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,32,294.0E0,0.0E0,1132)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,33,295.0E0,0.0E0,1133)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,34,296.0E0,0.0E0,1134)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,35,297.0E0,0.0E0,1135)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,36,298.0E0,0.0E0,1136)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,37,299.0E0,0.0E0,1137)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,38,300.0E0,0.0E0,1138)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,39,301.0E0,0.0E0,1139)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,40,302.0E0,0.0E0,1140)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,41,303.0E0,0.0E0,1141)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,42,304.0E0,0.0E0,1142)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,43,305.0E0,0.0E0,1143)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,44,306.0E0,0.0E0,1144)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,45,307.0E0,0.0E0,1145)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,46,308.0E0,0.0E0,1146)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,47,309.0E0,0.0E0,1147)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,48,310.0E0,0.0E0,1148)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,49,311.0E0,0.0E0,1149)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,50,312.0E0,0.0E0,1150)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,51,313.0E0,0.0E0,1151)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,52,314.0E0,0.0E0,1152)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,53,315.0E0,0.0E0,1153)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,54,316.0E0,0.0E0,1154)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,55,317.0E0,0.0E0,1155)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,56,318.0E0,0.0E0,1156)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,57,319.0E0,0.0E0,1157)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,58,320.0E0,0.0E0,1158)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,59,321.0E0,0.0E0,1159)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,60,322.0E0,0.0E0,1160)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,61,323.0E0,0.0E0,1161)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,62,324.0E0,0.0E0,1162)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,63,325.0E0,0.0E0,1163)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,64,326.0E0,0.0E0,1164)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,65,327.0E0,0.0E0,1165)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,66,328.0E0,0.0E0,1166)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,67,329.0E0,0.0E0,1167)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,68,330.0E0,0.0E0,1168)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,69,331.0E0,0.0E0,1169)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,70,332.0E0,0.0E0,1170)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,71,333.0E0,0.0E0,1171)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,72,334.0E0,0.0E0,1172)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,73,335.0E0,1.0E0,1173)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,74,336.0E0,1.0E0,1174)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,75,337.0E0,1.0E0,1175)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,76,338.0E0,1.0E0,1176)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,77,339.0E0,1.0E0,1177)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,78,340.0E0,1.0E0,1178)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,79,341.0E0,1.0E0,1179)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,80,342.0E0,1.0E0,1180)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,81,343.0E0,1.0E0,1181)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,82,344.0E0,1.0E0,1182)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,83,345.0E0,1.0E0,1183)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,84,346.0E0,1.0E0,1184)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,85,347.0E0,0.0E0,1185)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,86,348.0E0,1.0E0,1186)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,87,349.0E0,1.0E0,1187)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,88,350.0E0,1.0E0,1188)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,89,351.0E0,1.0E0,1189)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,90,352.0E0,1.0E0,1190)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,91,353.0E0,1.0E0,1191)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,92,354.0E0,1.0E0,1192)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,93,355.0E0,0.0E0,1193)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,94,356.0E0,0.0E0,1194)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,95,357.0E0,0.0E0,1195)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,96,358.0E0,0.0E0,1196)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,97,359.0E0,0.0E0,1197)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,98,360.0E0,0.0E0,1198)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(11,99,361.0E0,0.0E0,1199)
+COMMIT
+INSERT INTO AGENT_ELEMENTS_RAW_LOG VALUES(12,0,'chart1 : Beeing Fed',12)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,0,262.0E0,0.0E0,1200)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,1,263.0E0,0.0E0,1201)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,2,264.0E0,0.0E0,1202)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,3,265.0E0,0.0E0,1203)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,4,266.0E0,0.0E0,1204)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,5,267.0E0,0.0E0,1205)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,6,268.0E0,0.0E0,1206)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,7,269.0E0,0.0E0,1207)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,8,270.0E0,0.0E0,1208)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,9,271.0E0,0.0E0,1209)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,10,272.0E0,0.0E0,1210)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,11,273.0E0,0.0E0,1211)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,12,274.0E0,0.0E0,1212)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,13,275.0E0,0.0E0,1213)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,14,276.0E0,0.0E0,1214)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,15,277.0E0,0.0E0,1215)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,16,278.0E0,0.0E0,1216)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,17,279.0E0,0.0E0,1217)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,18,280.0E0,0.0E0,1218)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,19,281.0E0,0.0E0,1219)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,20,282.0E0,0.0E0,1220)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,21,283.0E0,0.0E0,1221)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,22,284.0E0,0.0E0,1222)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,23,285.0E0,0.0E0,1223)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,24,286.0E0,0.0E0,1224)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,25,287.0E0,0.0E0,1225)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,26,288.0E0,0.0E0,1226)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,27,289.0E0,0.0E0,1227)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,28,290.0E0,0.0E0,1228)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,29,291.0E0,0.0E0,1229)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,30,292.0E0,0.0E0,1230)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,31,293.0E0,0.0E0,1231)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,32,294.0E0,0.0E0,1232)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,33,295.0E0,0.0E0,1233)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,34,296.0E0,0.0E0,1234)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,35,297.0E0,0.0E0,1235)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,36,298.0E0,0.0E0,1236)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,37,299.0E0,0.0E0,1237)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,38,300.0E0,0.0E0,1238)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,39,301.0E0,0.0E0,1239)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,40,302.0E0,0.0E0,1240)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,41,303.0E0,0.0E0,1241)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,42,304.0E0,0.0E0,1242)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,43,305.0E0,0.0E0,1243)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,44,306.0E0,0.0E0,1244)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,45,307.0E0,0.0E0,1245)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,46,308.0E0,0.0E0,1246)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,47,309.0E0,0.0E0,1247)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,48,310.0E0,0.0E0,1248)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,49,311.0E0,0.0E0,1249)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,50,312.0E0,0.0E0,1250)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,51,313.0E0,0.0E0,1251)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,52,314.0E0,0.0E0,1252)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,53,315.0E0,0.0E0,1253)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,54,316.0E0,0.0E0,1254)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,55,317.0E0,0.0E0,1255)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,56,318.0E0,0.0E0,1256)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,57,319.0E0,0.0E0,1257)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,58,320.0E0,0.0E0,1258)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,59,321.0E0,0.0E0,1259)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,60,322.0E0,0.0E0,1260)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,61,323.0E0,0.0E0,1261)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,62,324.0E0,0.0E0,1262)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,63,325.0E0,0.0E0,1263)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,64,326.0E0,0.0E0,1264)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,65,327.0E0,0.0E0,1265)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,66,328.0E0,0.0E0,1266)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,67,329.0E0,0.0E0,1267)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,68,330.0E0,0.0E0,1268)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,69,331.0E0,0.0E0,1269)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,70,332.0E0,0.0E0,1270)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,71,333.0E0,0.0E0,1271)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,72,334.0E0,0.0E0,1272)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,73,335.0E0,0.0E0,1273)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,74,336.0E0,0.0E0,1274)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,75,337.0E0,0.0E0,1275)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,76,338.0E0,0.0E0,1276)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,77,339.0E0,0.0E0,1277)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,78,340.0E0,0.0E0,1278)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,79,341.0E0,0.0E0,1279)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,80,342.0E0,0.0E0,1280)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,81,343.0E0,0.0E0,1281)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,82,344.0E0,0.0E0,1282)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,83,345.0E0,0.0E0,1283)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,84,346.0E0,0.0E0,1284)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,85,347.0E0,0.0E0,1285)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,86,348.0E0,1.0E0,1286)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,87,349.0E0,1.0E0,1287)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,88,350.0E0,1.0E0,1288)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,89,351.0E0,1.0E0,1289)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,90,352.0E0,1.0E0,1290)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,91,353.0E0,1.0E0,1291)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,92,354.0E0,1.0E0,1292)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,93,355.0E0,0.0E0,1293)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,94,356.0E0,0.0E0,1294)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,95,357.0E0,0.0E0,1295)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,96,358.0E0,0.0E0,1296)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,97,359.0E0,0.0E0,1297)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,98,360.0E0,0.0E0,1298)
+COMMIT
+INSERT INTO DATASETS_RAW_LOG VALUES(12,99,361.0E0,0.0E0,1299)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(51,1,'2023-08-08 01:36:55.107000','2023-08-08 05:51:07.061000',94)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(52,1,'2023-08-08 02:32:48.278000','2023-08-08 05:51:07.061000',95)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(53,1,'2023-08-08 01:04:21.328000','2023-08-08 05:51:07.061000',96)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(54,1,'2023-08-08 01:25:07.444000','2023-08-08 05:51:07.061000',97)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(55,1,'2023-08-08 02:05:19.825000','2023-08-08 05:51:07.061000',98)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(56,1,'2023-08-08 00:00:00.000000','2023-08-08 05:51:07.061000',99)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(57,1,'2023-08-08 05:51:07.061000','2023-08-08 05:51:07.061000',100)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(58,1,'2023-08-08 02:01:29.318000','2023-08-08 05:51:07.061000',101)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(59,1,'2023-08-08 00:00:00.000000','2023-08-08 05:51:07.061000',102)
+COMMIT
+INSERT INTO STATECHART_STATES_RAW_LOG VALUES(60,1,'2023-08-08 02:51:40.776000','2023-08-08 05:51:07.061000',103)
+COMMIT
+DISCONNECT
